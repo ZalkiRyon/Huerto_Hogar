@@ -11,6 +11,19 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.huerto_hogar.AppScreens.AppScreens
+import com.example.huerto_hogar.screen.HomeScreen
+import com.example.huerto_hogar.screen.BlogScreen
+import com.example.huerto_hogar.screen.CartScreen
+import com.example.huerto_hogar.screen.UsSettScreen
+import com.example.huerto_hogar.screen.CatalogScreen
+import com.example.huerto_hogar.screen.FavScreen
+import com.example.huerto_hogar.screen.LoginScreen
+import com.example.huerto_hogar.screen.RegistroScreen
+
 import com.example.huerto_hogar.ui.theme.Huerto_HogarTheme
 
 class MainActivity : ComponentActivity() {
@@ -19,29 +32,37 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             Huerto_HogarTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                val navController = rememberNavController()
+                NavHost(
+                    navController = navController,
+                    startDestination = AppScreens.HomeScreen.route
+                ){
+                    composable(route = AppScreens.HomeScreen.route){
+                        HomeScreen(navController = navController)
+                    }
+                    composable(route = AppScreens.LoginScreen.route){
+                        LoginScreen(navController = navController)
+                    }
+                    composable(route = AppScreens.RegistroScreen.route){
+                        RegistroScreen(navController = navController)
+                    }
+                    composable(route = AppScreens.FavScreen.route){
+                        FavScreen(navController = navController)
+                    }
+                    composable(route = AppScreens.CartScreen.route){
+                        CartScreen(navController = navController)
+                    }
+                    composable(route = AppScreens.CatalogScreen.route){
+                        CatalogScreen(navController = navController)
+                    }
+                    composable(route = AppScreens.UsSettScreen.route){
+                        UsSettScreen(navController = navController)
+                    }
+                    composable(route = AppScreens.blogScreen.route){
+                        BlogScreen(navController = navController)
+                    }
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    Huerto_HogarTheme {
-        Greeting("Android")
     }
 }
