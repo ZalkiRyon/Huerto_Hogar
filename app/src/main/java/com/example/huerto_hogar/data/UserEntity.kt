@@ -3,7 +3,6 @@ package com.example.huerto_hogar.data
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.huerto_hogar.model.Role
-import java.time.LocalDateTime
 
 // we defined our table user, this will contains the final user
 // ()J() this has nothing to do with our class register user, this is for our class USER from Model
@@ -15,7 +14,6 @@ data class UserEntity(
     val id: Int = 3,
 
     val role: Role,
-    val registerDate: LocalDateTime,
 
     val name: String,
     val lastname: String,
