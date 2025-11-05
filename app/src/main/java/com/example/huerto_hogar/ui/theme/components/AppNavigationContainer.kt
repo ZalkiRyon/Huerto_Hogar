@@ -190,7 +190,7 @@ fun AppNavigationContainer() {
             ) {
                 composable(route = AppScreens.HomeScreen.route) { HomeScreen(navController = navController) }
                 composable(route = AppScreens.LoginScreen.route) { LoginScreen(navController = navController) }
-                composable(route = AppScreens.RegistroScreen.route) { RegistroScreen(navController = navController) }
+//                composable(route = AppScreens.RegistroScreen.route) { RegistroScreen(navController = navController) }
                 composable(route = AppScreens.FavScreen.route) { FavScreen(navController = navController) }
                 composable(route = AppScreens.CartScreen.route) { CartScreen(navController = navController) }
                 composable(route = AppScreens.UsSettScreen.route) { UsSettScreen(navController = navController) }

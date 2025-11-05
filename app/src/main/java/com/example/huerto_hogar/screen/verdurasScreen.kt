@@ -10,7 +10,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.huerto_hogar.R
 import com.example.huerto_hogar.ui.theme.components.CatalogoNavigation
+
+data class ProductoVerduras(
+    val id: Int,
+    val nombre: String,
+    val precio: Int,
+    val urlImagen: Int = R.drawable.imagen_no_found //defecto
+
+)
+
+//                      Productos de ejemplo
+val productosVerduras = listOf(
+    ProductoVerduras(1, "Manzanas Fuji",1200, R.drawable.manzana_fuji),
+    ProductoVerduras(2, "Naranjas Valencia", 1000, R.drawable.naranja_valencia),
+    ProductoVerduras(3, "Platanos Cavendish", 800, R.drawable.platano)
+)
 
 @Composable
 fun VerdurasScreen (navController: NavHostController){
