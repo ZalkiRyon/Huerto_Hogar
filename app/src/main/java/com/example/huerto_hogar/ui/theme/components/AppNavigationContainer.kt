@@ -45,6 +45,7 @@ import com.example.huerto_hogar.screen.OrganicosScreen
 import com.example.huerto_hogar.screen.RegistroScreen
 import com.example.huerto_hogar.screen.UsSettScreen
 import com.example.huerto_hogar.screen.VerdurasScreen
+import com.example.huerto_hogar.viewmodel.LoginViewModel
 import com.example.huerto_hogar.viewmodel.RegisterUserViewModel
 import kotlinx.coroutines.launch
 
@@ -194,7 +195,10 @@ fun AppNavigationContainer() {
                 modifier = Modifier.padding(contentPadding)
             ) {
                 composable(route = AppScreens.HomeScreen.route) { HomeScreen(navController = navController) }
-                composable(route = AppScreens.LoginScreen.route) { LoginScreen(navController = navController) }
+                composable(route = AppScreens.LoginScreen.route) {
+                    val loginVM: LoginViewModel = viewModel()
+                    loginVM.userManager = userManager
+                    LoginScreen(navController = navController,loginVM) }
                 composable(route = AppScreens.RegistroScreen.route) {
                     val registerVM: RegisterUserViewModel = viewModel()
                     registerVM.userManager = userManager

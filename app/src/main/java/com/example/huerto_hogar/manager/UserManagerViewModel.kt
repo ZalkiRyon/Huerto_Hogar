@@ -54,6 +54,15 @@ class UserManagerViewModel : ViewModel() {
         return userWithId
     }
 
+    fun findUserByCredentials(email: String, password: String): User? {
+        return _userList.value.find { user ->
+
+            val emailMatch = user.email.equals(email, ignoreCase = true)
+            val passwordMatch = user.password == password
+
+            emailMatch && passwordMatch
+        }
+    }
 
     fun findUserByEmail(email: String): User? {
         return _userList.value.find { it.email.equals(email, ignoreCase = true) }
