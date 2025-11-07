@@ -22,8 +22,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
-import com.example.huerto_hogar.ui.theme.Huerto_HogarTheme
 import com.example.huerto_hogar.ui.theme.components.Header
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -86,7 +84,7 @@ fun FrutasScreen(
                 frutas,
                 key = { it.id }
             ){producto ->
-                ProductoCard(
+                ProductoCardFrutas(
                     producto = producto,
                     onAgregarCarrito = {productoAgregado ->
 
@@ -98,7 +96,7 @@ fun FrutasScreen(
 }
 
 @Composable
-fun ProductoCard(
+fun ProductoCardFrutas(
     producto: ProductoFrutas,
     onAgregarCarrito: (ProductoFrutas) -> Unit
 ){
@@ -152,7 +150,7 @@ fun ProductoCard(
 
                     //Precio moneda
                     Text(
-                        text = "$${producto.precio.toInt()}",
+                        text = "$${producto.precio}",
                         style = MaterialTheme.typography.titleSmall,
                         color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.Bold
@@ -171,37 +169,7 @@ fun ProductoCard(
                     Spacer(modifier = Modifier.width(8.dp))
                     Text("Agregar al carrito")
                 }
-
-
             }
         }
-    }
-
-}
-
-@Preview (showBackground = true, showSystemUi = true)
-@Composable
-fun FrutasScreenPrevew(){
-    Huerto_HogarTheme {
-        val navController = rememberNavController()
-
-        FrutasScreen(navController = navController)
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ProductoCardPreview(){
-    Huerto_HogarTheme {
-        val productoEjemplo = ProductoFrutas(
-            id = 1,
-            nombre = "Manzanas Fuji",
-            precio = 1200,
-            urlImagen = R.drawable.manzana_fuji
-        )
-        ProductoCard(
-            producto = productoEjemplo,
-            onAgregarCarrito = {}
-        )
     }
 }
