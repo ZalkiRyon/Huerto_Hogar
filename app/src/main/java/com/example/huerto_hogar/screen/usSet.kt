@@ -153,6 +153,14 @@ fun UsSettScreen(navController: NavController, viewModel: UserSettingsViewModel)
             modifier = Modifier.align(Alignment.Start)
         )
 
+        InputField(
+            value = formState.currentPassword,
+            onValueChange = viewModel::onChangeCurrentPassword,
+            label = "Contraseña Actual",
+            modifier = Modifier,
+            error = formState.errors.currentPasswordError
+        )
+
         if (formState.currentPassword.isNotBlank()) {
             InputField(
                 value = formState.newPassword,
@@ -169,14 +177,6 @@ fun UsSettScreen(navController: NavController, viewModel: UserSettingsViewModel)
                 error = formState.errors.confirmNewPasswordError
             )
         }
-
-        InputField(
-            value = formState.confirmNewPassword,
-            onValueChange = viewModel::onChangeConfirmNewPassword,
-            label = "Confirmar Nueva Contraseña",
-            modifier = Modifier,
-            error = formState.errors.confirmNewPasswordError
-        )
 
         Spacer(modifier = Modifier.height(24.dp))
 
