@@ -44,6 +44,7 @@ import androidx.navigation.NavController
 import com.example.huerto_hogar.AppScreens.AppScreens
 import com.example.huerto_hogar.R
 import com.example.huerto_hogar.model.MockProducts
+import com.example.huerto_hogar.model.Product
 import java.text.NumberFormat
 import java.util.Locale
 

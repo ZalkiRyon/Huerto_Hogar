@@ -27,10 +27,10 @@ object MockProducts {
         Product(1, "Manzanas Fuji", ProductCategory.FRUTAS, 1200.0, 45, com.example.huerto_hogar.R.drawable.manzana_fuji, "Manzanas frescas importadas"),
         Product(2, "Naranjas Valencia", ProductCategory.FRUTAS, 1000.0, 60, com.example.huerto_hogar.R.drawable.naranja_valencia, "Naranjas dulces de temporada"),
         Product(3, "Plátanos Cavendish", ProductCategory.FRUTAS, 800.0, 80, com.example.huerto_hogar.R.drawable.platano, "Plátanos maduros"),
-        Product(4, "Tomates Cherry", ProductCategory.VERDURAS, 1500.0, 30, com.example.huerto_hogar.R.drawable.tomate, "Tomates orgánicos"),
-        Product(5, "Lechugas Hidropónicas", ProductCategory.ORGANICOS, 900.0, 25, com.example.huerto_hogar.R.drawable.lechuga, "Cultivo hidropónico"),
-        Product(6, "Zanahorias", ProductCategory.VERDURAS, 700.0, 50, com.example.huerto_hogar.R.drawable.zanahoria, "Zanahorias frescas"),
-        Product(7, "Espinacas Orgánicas", ProductCategory.ORGANICOS, 1100.0, 20, com.example.huerto_hogar.R.drawable.espinaca, "100% orgánicas"),
-        Product(8, "Pimientos Rojos", ProductCategory.VERDURAS, 1300.0, 35, com.example.huerto_hogar.R.drawable.pimientos, "Pimientos frescos")
+        Product(4, "Pimientos Rojos", ProductCategory.VERDURAS, 1300.0, 35, com.example.huerto_hogar.R.drawable.pimientos, "Pimientos frescos rojos"),
+        Product(5, "Espinacas Orgánicas", ProductCategory.ORGANICOS, 1100.0, 20, com.example.huerto_hogar.R.drawable.espinaca, "100% orgánicas"),
+        Product(6, "Zanahorias", ProductCategory.VERDURAS, 700.0, 50, com.example.huerto_hogar.R.drawable.zanahorias, "Zanahorias frescas"),
+        Product(7, "Naranjas Orgánicas", ProductCategory.ORGANICOS, 1500.0, 25, com.example.huerto_hogar.R.drawable.orange, "Cultivo orgánico"),
+        Product(8, "Zanahorias Premium", ProductCategory.VERDURAS, 900.0, 30, com.example.huerto_hogar.R.drawable.carrot, "Zanahorias seleccionadas")
     )
 }
