@@ -10,6 +10,7 @@ import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,6 +30,8 @@ import com.example.huerto_hogar.ui.theme.Huerto_HogarTheme
 import com.example.huerto_hogar.ui.theme.components.Header
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.huerto_hogar.viewmodel.CartViewModel
+import kotlinx.coroutines.launch
+import androidx.compose.runtime.rememberCoroutineScope
 
 @Composable
 fun VerdurasScreen(
@@ -39,6 +42,9 @@ fun VerdurasScreen(
     val verduras = remember {
         MockProducts.products.filter { it.category == ProductCategory.VERDURAS }
     }
+    
+    val snackbarHostState = remember { SnackbarHostState() }
+    val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
         topBar = {
@@ -46,7 +52,8 @@ fun VerdurasScreen(
                 navController = navController,
                 title = "Verduras"
             )
-        }
+        },
+        snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { paddingValues ->
         LazyColumn(
             modifier = Modifier
@@ -62,6 +69,12 @@ fun VerdurasScreen(
                     producto = producto,
                     onAgregarCarrito = { productoAgregado ->
                         cartViewModel.addToCart(productoAgregado)
+                        coroutineScope.launch {
+                            snackbarHostState.showSnackbar(
+                                message = "✓ ${productoAgregado.name} agregado al carrito",
+                                duration = SnackbarDuration.Short
+                            )
+                        }
                     }
                 )
             }

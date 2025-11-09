@@ -16,7 +16,11 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
@@ -47,6 +51,7 @@ import com.example.huerto_hogar.model.ProductCategory
 import com.example.huerto_hogar.model.MockProducts
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.huerto_hogar.viewmodel.CartViewModel
+import kotlinx.coroutines.launch
 
 @Composable
 fun FrutasScreen(
@@ -57,6 +62,9 @@ fun FrutasScreen(
     val frutas = remember {
         MockProducts.products.filter { it.category == ProductCategory.FRUTAS }
     }
+    
+    val snackbarHostState = remember { SnackbarHostState() }
+    val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
         topBar = {
@@ -64,7 +72,8 @@ fun FrutasScreen(
                 navController = navController,
                 title = "Frutas"
             )
-        }
+        },
+        snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { paddingValues ->
         LazyColumn(
             modifier = Modifier
@@ -80,6 +89,12 @@ fun FrutasScreen(
                     producto = producto,
                     onAgregarCarrito = { productoAgregado ->
                         cartViewModel.addToCart(productoAgregado)
+                        coroutineScope.launch {
+                            snackbarHostState.showSnackbar(
+                                message = "✓ ${productoAgregado.name} agregado al carrito",
+                                duration = SnackbarDuration.Short
+                            )
+                        }
                     }
                 )
             }

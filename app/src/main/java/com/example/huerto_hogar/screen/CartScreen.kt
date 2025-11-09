@@ -26,9 +26,16 @@ fun CartScreen(
 ) {
     val cartItems by cartViewModel.cartItems.collectAsState()
     val studentDiscount by cartViewModel.studentDiscount.collectAsState()
-    val subtotal = cartViewModel.calculateSubtotal()
-    val discount = cartViewModel.calculateDiscount()
-    val total = cartViewModel.calculateTotal()
+    
+    val subtotal by remember {
+        derivedStateOf { cartViewModel.calculateSubtotal() }
+    }
+    val discount by remember {
+        derivedStateOf { cartViewModel.calculateDiscount() }
+    }
+    val total by remember {
+        derivedStateOf { cartViewModel.calculateTotal() }
+    }
     
     var showClearDialog by remember { mutableStateOf(false) }
     
@@ -325,7 +332,7 @@ fun CartItemCard(
                     modifier = Modifier.size(36.dp)
                 ) {
                     Icon(
-                        imageVector = Icons.Default.Remove,
+                        imageVector = Icons.Default.KeyboardArrowDown,
                         contentDescription = "Reducir cantidad",
                         tint = MaterialTheme.colorScheme.primary
                     )
@@ -344,7 +351,7 @@ fun CartItemCard(
                     modifier = Modifier.size(36.dp)
                 ) {
                     Icon(
-                        imageVector = Icons.Default.Add,
+                        imageVector = Icons.Default.KeyboardArrowUp,
                         contentDescription = "Aumentar cantidad",
                         tint = MaterialTheme.colorScheme.primary
                     )
