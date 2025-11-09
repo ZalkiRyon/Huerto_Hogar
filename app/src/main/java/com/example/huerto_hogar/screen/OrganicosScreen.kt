@@ -27,9 +27,14 @@ import com.example.huerto_hogar.model.ProductCategory
 import com.example.huerto_hogar.model.MockProducts
 import com.example.huerto_hogar.ui.theme.Huerto_HogarTheme
 import com.example.huerto_hogar.ui.theme.components.Header
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.huerto_hogar.viewmodel.CartViewModel
 
 @Composable
-fun OrganicosScreen(navController: NavHostController) {
+fun OrganicosScreen(
+    navController: NavHostController,
+    cartViewModel: CartViewModel = viewModel()
+) {
     // Filtrar solo productos de categoría ORGANICOS
     val organicos = remember {
         MockProducts.products.filter { it.category == ProductCategory.ORGANICOS }
@@ -56,7 +61,7 @@ fun OrganicosScreen(navController: NavHostController) {
                 ProductoOrganicosCard(
                     producto = producto,
                     onAgregarCarrito = { productoAgregado ->
-                        // TODO: Implementar lógica del carrito
+                        cartViewModel.addToCart(productoAgregado)
                     }
                 )
             }

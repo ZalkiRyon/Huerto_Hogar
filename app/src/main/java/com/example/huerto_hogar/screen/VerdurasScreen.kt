@@ -27,9 +27,14 @@ import com.example.huerto_hogar.model.ProductCategory
 import com.example.huerto_hogar.model.MockProducts
 import com.example.huerto_hogar.ui.theme.Huerto_HogarTheme
 import com.example.huerto_hogar.ui.theme.components.Header
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.huerto_hogar.viewmodel.CartViewModel
 
 @Composable
-fun VerdurasScreen(navController: NavHostController) {
+fun VerdurasScreen(
+    navController: NavHostController,
+    cartViewModel: CartViewModel = viewModel()
+) {
     // Filtrar solo productos de categoría VERDURAS
     val verduras = remember {
         MockProducts.products.filter { it.category == ProductCategory.VERDURAS }
@@ -56,7 +61,7 @@ fun VerdurasScreen(navController: NavHostController) {
                 ProductoVerdurasCard(
                     producto = producto,
                     onAgregarCarrito = { productoAgregado ->
-                        // TODO: Implementar lógica del carrito
+                        cartViewModel.addToCart(productoAgregado)
                     }
                 )
             }

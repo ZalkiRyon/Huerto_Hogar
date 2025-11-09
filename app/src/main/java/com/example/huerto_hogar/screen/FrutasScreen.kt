@@ -45,10 +45,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import com.example.huerto_hogar.model.Product
 import com.example.huerto_hogar.model.ProductCategory
 import com.example.huerto_hogar.model.MockProducts
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.huerto_hogar.viewmodel.CartViewModel
 
 @Composable
 fun FrutasScreen(
-    navController: NavHostController
+    navController: NavHostController,
+    cartViewModel: CartViewModel = viewModel()
 ) {
     // Filtrar solo productos de categoría FRUTAS
     val frutas = remember {
@@ -75,8 +78,8 @@ fun FrutasScreen(
             ){producto ->
                 ProductoCard(
                     producto = producto,
-                    onAgregarCarrito = {productoAgregado ->
-
+                    onAgregarCarrito = { productoAgregado ->
+                        cartViewModel.addToCart(productoAgregado)
                     }
                 )
             }

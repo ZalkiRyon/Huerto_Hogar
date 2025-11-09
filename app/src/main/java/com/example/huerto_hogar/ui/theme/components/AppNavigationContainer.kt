@@ -53,6 +53,7 @@ import com.example.huerto_hogar.screen.VerdurasScreen
 import com.example.huerto_hogar.viewmodel.LoginViewModel
 import com.example.huerto_hogar.viewmodel.RegisterUserViewModel
 import com.example.huerto_hogar.viewmodel.UserSettingsViewModel
+import com.example.huerto_hogar.viewmodel.CartViewModel
 import com.example.huerto_hogar.ui.theme.components.animations.*
 import com.example.huerto_hogar.ui.theme.components.admin.AdminNavigationContainer
 import com.example.huerto_hogar.screen.admin.*
@@ -62,6 +63,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun AppNavigationContainer() {
     val userManager: UserManagerViewModel = viewModel()
+    val cartViewModel: CartViewModel = viewModel()
 
     val currentUser by userManager.currentUser.collectAsState()
     
@@ -305,7 +307,10 @@ fun AppNavigationContainer() {
                     enterTransition = { slideInFromRightWithFade() },
                     exitTransition = { slideOutToLeftWithFade() }
                 ) { 
-                    CartScreen(navController = navController) 
+                    CartScreen(
+                        navController = navController,
+                        cartViewModel = cartViewModel
+                    ) 
                 }
                 
                 composable(
@@ -331,7 +336,10 @@ fun AppNavigationContainer() {
                     enterTransition = { fadeIn() },
                     exitTransition = { fadeOut() }
                 ) { 
-                    FrutasScreen(navController = navController) 
+                    FrutasScreen(
+                        navController = navController,
+                        cartViewModel = cartViewModel
+                    ) 
                 }
                 
                 composable(
@@ -339,7 +347,10 @@ fun AppNavigationContainer() {
                     enterTransition = { fadeIn() },
                     exitTransition = { fadeOut() }
                 ) { 
-                    OrganicosScreen(navController = navController) 
+                    OrganicosScreen(
+                        navController = navController,
+                        cartViewModel = cartViewModel
+                    ) 
                 }
                 
                 composable(
@@ -347,7 +358,10 @@ fun AppNavigationContainer() {
                     enterTransition = { fadeIn() },
                     exitTransition = { fadeOut() }
                 ) { 
-                    VerdurasScreen(navController = navController) 
+                    VerdurasScreen(
+                        navController = navController,
+                        cartViewModel = cartViewModel
+                    ) 
                 }
                 
                 // Admin Routes
