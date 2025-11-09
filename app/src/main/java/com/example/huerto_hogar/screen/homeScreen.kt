@@ -33,12 +33,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.huerto_hogar.AppScreens.AppScreens
 import com.example.huerto_hogar.R
@@ -99,14 +100,17 @@ fun HomeScreen(navController: NavController) {
 
 @Composable
 fun HeaderBanner(navController: NavController) {
+    val screenBackground = MaterialTheme.colorScheme.background
+    val brandPrimary = MaterialTheme.colorScheme.primary
+    val onBackground = MaterialTheme.colorScheme.onBackground
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(300.dp)
-            .background(Color(0xFFF4F5F7))
+            .height(400.dp)
+
     ) {
         Image(
-            painter = painterResource(id = R.drawable.ic_launcher_background),
+            painter = painterResource(id = R.drawable.fondonuevobgd),
             contentDescription = "Fondo de frutas y verduras",
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize()
@@ -117,11 +121,13 @@ fun HeaderBanner(navController: NavController) {
                 .background(
                     Brush.verticalGradient(
                         colors = listOf(
-                            Color.Transparent,
-                            Color(0xFFF4F5F7)
+                            screenBackground.copy(alpha = 0.3f),
+                            screenBackground.copy(alpha = 0.6f),
+                            screenBackground.copy(alpha = 0.85f),
+                            screenBackground
                         ),
-                        startY = 0.0f,
-                        endY = 250.dp.value * 0.9f
+                        startY = 0f,
+                        endY = Float.POSITIVE_INFINITY
                     )
                 )
         )
@@ -129,49 +135,76 @@ fun HeaderBanner(navController: NavController) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 60.dp, bottom = 24.dp, end = 24.dp, start = 24.dp)
-                .align(Alignment.Center),
-            horizontalAlignment = Alignment.CenterHorizontally,
+                .padding(horizontal = 44.dp, vertical = 40.dp),
+            horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.Center
         ) {
             Text(
                 text = "Huerto Hogar",
                 style = MaterialTheme.typography.headlineLarge.copy(
                     fontWeight = FontWeight.Black,
-                    color = Color.DarkGray
+                    color = onBackground
                 ),
                 textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = "Frescura",
+                style = MaterialTheme.typography.headlineMedium.copy(
+                    fontWeight = FontWeight.Normal
+                ),
+                color = onBackground
+            )
 
             Text(
-                text = "¡Descubre la frescura del campo con HuertoHogar!",
-                style = MaterialTheme.typography.bodyMedium,
-                textAlign = TextAlign.Center,
-                color = Color.DarkGray
+                text = "Directa del",
+                style = MaterialTheme.typography.headlineMedium.copy(
+                    fontWeight = FontWeight.Normal
+                ),
+                color = onBackground
             )
+
             Text(
-                text = "Conéctate con la naturaleza y lleva lo mejor del campo a tu mesa.",
-                style = MaterialTheme.typography.bodyMedium,
-                textAlign = TextAlign.Center,
-                color = Color.DarkGray
-            )
-            Text(
-                text = "¡Únete a nosotros y disfruta de productos frescos y saludables, directo a tu hogar!",
-                style = MaterialTheme.typography.bodyMedium,
-                textAlign = TextAlign.Center,
-                color = Color.DarkGray
+                text = "Campo",
+                style = MaterialTheme.typography.headlineMedium.copy(
+                    fontWeight = FontWeight.Normal
+                ),
+                color = onBackground
             )
 
             Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                text = "Productos 100% orgánicos entregados",
+                style = MaterialTheme.typography.bodyLarge,
+                color = onBackground
+            )
+
+            Text(
+                text = "en tu puerta",
+                style = MaterialTheme.typography.bodyLarge,
+                color = onBackground
+            )
+
+            Spacer(modifier = Modifier.height(24.dp))
 
             Button(
                 onClick = { /* TODO: Navegar a la ruta principal del catálogo */ },
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2E8B57)),
-                shape = RoundedCornerShape(8.dp)
+                colors = ButtonDefaults.buttonColors(containerColor = brandPrimary),
+                shape = RoundedCornerShape(12.dp),
+                contentPadding = PaddingValues(horizontal = 32.dp, vertical = 16.dp),
+                elevation = ButtonDefaults.buttonElevation(
+                    defaultElevation = 4.dp,
+                    pressedElevation = 8.dp
+                )
             ) {
-                Text("VER PRODUCTOS", color = Color.White, fontWeight = FontWeight.Bold)
+                Text(
+                    "EXPLORAR PRODUCTOS",
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = 1.sp
+                )
             }
+
         }
     }
 }
@@ -182,6 +215,7 @@ fun TitleWithDivider(title: String) {
         Text(
             text = title,
             style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+            color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.padding(vertical = 8.dp)
         )
 
@@ -189,7 +223,7 @@ fun TitleWithDivider(title: String) {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(2.dp),
-            color = Color(0xFF4CAF50)
+            color = MaterialTheme.colorScheme.primary
         )
     }
 }
@@ -200,7 +234,7 @@ fun CategorySection(categories: List<Category>, navController: NavController) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 16.dp, bottom = 16.dp),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalArrangement = Arrangement.SpaceEvenly,
         contentPadding = PaddingValues(horizontal = 8.dp)
     ) {
         items(categories) { category ->
@@ -215,14 +249,14 @@ fun CategorySection(categories: List<Category>, navController: NavController) {
                     modifier = Modifier
                         .size(64.dp)
                         .clip(CircleShape)
-                        .background(Color(0xFFDCEDC8)),
+                        .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         painter = painterResource(id = category.iconResId),
                         contentDescription = category.name,
                         modifier = Modifier.size(32.dp),
-                        tint = Color(0xFF4CAF50)
+                        tint = MaterialTheme.colorScheme.primary
                     )
                 }
                 Spacer(modifier = Modifier.height(4.dp))
@@ -231,7 +265,8 @@ fun CategorySection(categories: List<Category>, navController: NavController) {
                     style = MaterialTheme.typography.bodySmall,
                     textAlign = TextAlign.Center,
                     fontWeight = FontWeight.Medium,
-                    maxLines = 1
+                    maxLines = 1,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
             }
         }
@@ -245,16 +280,20 @@ fun FeaturedProductsCarousel(products: List<Product>) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 16.dp, bottom = 16.dp),
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
         contentPadding = PaddingValues(horizontal = 16.dp)
     ) {
         items(products) { product ->
             Card(
                 modifier = Modifier
-                    .width(160.dp)
-                    .height(250.dp),
-                shape = RoundedCornerShape(12.dp),
-                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+                    .width(140.dp)
+                    .height(200.dp)
+                    .clickable { /* TODO: navigate to detail or modal */ },
+                shape = RoundedCornerShape(16.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surface
+                ),
             ) {
                 Column(
                     modifier = Modifier.fillMaxSize()
@@ -266,39 +305,43 @@ fun FeaturedProductsCarousel(products: List<Product>) {
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .weight(1f)
-                            .clip(RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp))
+
+                            .height(110.dp)
+                            .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
                     )
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 8.dp, vertical = 8.dp),
-
-                        horizontalAlignment = Alignment.End,
+                            .padding(horizontal = 12.dp, vertical = 12.dp),
+                        horizontalAlignment = Alignment.Start,
                     ) {
 
                         Text(
                             text = product.name,
-                            style = MaterialTheme.typography.bodySmall,
-                            maxLines = 2,
-                            overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
-
-                            )
+                            style = MaterialTheme.typography.bodyMedium,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
                         Spacer(modifier = Modifier.height(4.dp))
 
 
                         fun formatAmount(amount: Double, locale: Locale): String {
                             val formatter = NumberFormat.getCurrencyInstance(locale)
+                            formatter.maximumFractionDigits = 0
                             return formatter.format(amount)
                         }
 
                         val deviceLocale = Locale.getDefault()
                         val formattedPrice = formatAmount(product.price.toDouble(), deviceLocale)
 
+
                         Text(
                             text = formattedPrice,
-                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.ExtraBold),
-                            color = Color.Black,
+                            style = MaterialTheme.typography.titleLarge.copy(
+                                fontWeight = FontWeight.ExtraBold
+                            ),
+                            color = MaterialTheme.colorScheme.onSurface,
                         )
                     }
                 }
