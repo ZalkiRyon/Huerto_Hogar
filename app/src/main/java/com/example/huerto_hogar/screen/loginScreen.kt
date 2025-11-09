@@ -34,6 +34,9 @@ import androidx.navigation.NavController
 import com.example.huerto_hogar.model.LoginResult
 import com.example.huerto_hogar.ui.theme.components.InputField
 import com.example.huerto_hogar.viewmodel.LoginViewModel
+import com.example.huerto_hogar.ui.theme.components.animations.bounceInEffect
+import com.example.huerto_hogar.ui.theme.components.animations.loadingPulseEffect
+import com.example.huerto_hogar.ui.theme.components.animations.pressClickEffect
 
 @Composable
 fun LoginScreen(navController: NavController, viewModel: LoginViewModel){
@@ -92,7 +95,9 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel){
             Text(
                 text = "Iniciar Sesión",
                 style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
-                modifier = Modifier.padding(bottom = 16.dp)
+                modifier = Modifier
+                    .padding(bottom = 16.dp)
+                    .bounceInEffect(delay = 0)
             )
 
             InputField(
@@ -100,7 +105,9 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel){
                 onValueChange = viewModel::onChangeEmail,
                 label = "Correo electrónico",
                 error = formState.errors.emailError,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .bounceInEffect(delay = 100)
             )
 
             InputField(
@@ -108,7 +115,10 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel){
                 onValueChange = viewModel::onChangePassword,
                 label = "Contraseña",
                 error = formState.errors.passwordError,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .bounceInEffect(delay = 200),
+                isPassword = true
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -116,7 +126,11 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel){
 
             Button(
                 onClick = { viewModel.onClickLogin() },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .bounceInEffect(delay = 300)
+                    .pressClickEffect()
+                    .loadingPulseEffect(formState.isLoading),
                 enabled = !formState.isLoading && formState.errors.emailError == null && formState.errors.passwordError == null
             ) {
                 if (formState.isLoading) {
@@ -129,7 +143,10 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel){
 
             Button(
                 onClick = { navController.navigate("registro_screen") },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .bounceInEffect(delay = 400)
+                    .pressClickEffect(),
                 colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray)
             ) {
                 Text(text = "CREAR CUENTA", color = Color.Black)

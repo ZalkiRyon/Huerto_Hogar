@@ -74,6 +74,14 @@ val categories = listOf(
     Category("Productos orgánicos", AppScreens.OrganicosScreen.route, R.drawable.plant)
 )
 
+/**
+ * Pantalla principal de la aplicación. Preparada para contenido futuro con soporte de animaciones.
+ * 
+ * TODO: Implementar contenido de Home. Se pueden aplicar:
+ * - LoadingAnimations.kt para estados de carga
+ * - ListAnimations.kt para listas de productos destacados
+ * - TransitionAnimations.kt para navegación a detalle de productos
+ */
 @Composable
 fun HomeScreen(navController: NavController) {
     val scrollState = rememberScrollState()

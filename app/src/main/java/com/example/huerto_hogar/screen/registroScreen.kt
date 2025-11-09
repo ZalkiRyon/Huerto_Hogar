@@ -35,6 +35,8 @@ import androidx.navigation.NavController
 import com.example.huerto_hogar.model.RegistrationResult
 import com.example.huerto_hogar.ui.theme.components.InputField
 import com.example.huerto_hogar.viewmodel.RegisterUserViewModel
+import com.example.huerto_hogar.ui.theme.components.animations.bounceInEffect
+import com.example.huerto_hogar.ui.theme.components.animations.pressClickEffect
 
 @Composable
 fun RegistroScreen(navController: NavController, viewModel: RegisterUserViewModel) {
@@ -99,7 +101,9 @@ fun RegistroScreen(navController: NavController, viewModel: RegisterUserViewMode
             Text(
                 text = "Crear cuenta",
                 style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
-                modifier = Modifier.padding(bottom = 16.dp)
+                modifier = Modifier
+                    .padding(bottom = 16.dp)
+                    .bounceInEffect(delay = 0)
             )
 
             InputField(
@@ -107,7 +111,7 @@ fun RegistroScreen(navController: NavController, viewModel: RegisterUserViewMode
                 onValueChange = { viewModel.onChangeName(it) },
                 label = "Nombre",
                 error = formState.errors.nameError,
-                modifier = Modifier
+                modifier = Modifier.bounceInEffect(delay = 50)
             )
 
             InputField(
@@ -115,7 +119,7 @@ fun RegistroScreen(navController: NavController, viewModel: RegisterUserViewMode
                 onValueChange = { viewModel.onChangeLastname(it) },
                 label = "Apellido",
                 error = formState.errors.lastnameError,
-                modifier = Modifier
+                modifier = Modifier.bounceInEffect(delay = 100)
             )
 
             InputField(
@@ -124,7 +128,7 @@ fun RegistroScreen(navController: NavController, viewModel: RegisterUserViewMode
                 label = "Correo electronico",
                 placeholder = "Solo correos con @duoc.cl, @profesor.duoc.cl y @gmail.com",
                 error = formState.errors.emailError,
-                modifier = Modifier
+                modifier = Modifier.bounceInEffect(delay = 150)
             )
 
             InputField(
@@ -132,7 +136,8 @@ fun RegistroScreen(navController: NavController, viewModel: RegisterUserViewMode
                 onValueChange = { viewModel.onChangePassword(it) },
                 label = "Contrasena",
                 error = formState.errors.passwordError,
-                modifier = Modifier
+                modifier = Modifier.bounceInEffect(delay = 200),
+                isPassword = true
             )
 
             InputField(
@@ -140,7 +145,8 @@ fun RegistroScreen(navController: NavController, viewModel: RegisterUserViewMode
                 onValueChange = { viewModel.onChangeConfirmPassword(it) },
                 label = "Confirmar contrasena",
                 error = formState.errors.confirmPasswordError,
-                modifier = Modifier
+                modifier = Modifier.bounceInEffect(delay = 250),
+                isPassword = true
             )
 
             InputField(
@@ -148,7 +154,7 @@ fun RegistroScreen(navController: NavController, viewModel: RegisterUserViewMode
                 onValueChange = { viewModel.onChangeAddress(it) },
                 label = "Direccion",
                 error = formState.errors.addressError,
-                modifier = Modifier
+                modifier = Modifier.bounceInEffect(delay = 300)
             )
             InputField(
                 value = formState.phone,
@@ -156,14 +162,17 @@ fun RegistroScreen(navController: NavController, viewModel: RegisterUserViewMode
                 label = "Telefono (opcional)",
                 placeholder = "Solo números, máximo 9 dígitos",
                 error = formState.errors.phoneError,
-                modifier = Modifier
+                modifier = Modifier.bounceInEffect(delay = 350)
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
             Button(
                 onClick = { viewModel.onClickRegister() },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .bounceInEffect(delay = 400)
+                    .pressClickEffect()
             ) {
                 Text(text = "REGISTRAR", color = Color.White, fontSize = 18.sp)
             }
