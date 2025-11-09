@@ -1,6 +1,5 @@
 package com.example.huerto_hogar.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -9,18 +8,36 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    // green for buttons
+    primary = Emerald,
+    onPrimary = Color.White,
+    // background cards
+    surface = SurfaceDark,
+    // background screen
+    background = BackgroundDark,
+    //  principal text
+    onSurface = PrimaryTextDark,
+    onBackground = PrimaryTextDark,
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
+    // Green for buttons
+    primary = Emerald,
+    // text over green
+    onPrimary = Color.White,
+    // cards
+    surface = SurfaceLight,
+    // background screen
+    background = BackgroundLight,
+    // principal text over surface
+    onSurface = PrimaryTextLight,
+    // principal text over background
+    onBackground = PrimaryTextLight,
+
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
@@ -36,8 +53,7 @@ private val LightColorScheme = lightColorScheme(
 @Composable
 fun Huerto_HogarTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
