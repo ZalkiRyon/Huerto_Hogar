@@ -10,7 +10,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.huerto_hogar.ui.theme.components.animations.inputErrorShake
+import com.example.huerto_hogar.ui.theme.components.animations.inputFocusAnimation
 
+/**
+ * Campo de entrada de texto reutilizable con animaciones integradas.
+ * Incluye animación de foco y shake en errores de validación.
+ */
 @Composable
 fun InputField(
     value: String,
@@ -29,7 +35,10 @@ fun InputField(
         OutlinedTextField(
             value = value,
             onValueChange = onValueChange,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .inputFocusAnimation()
+                .inputErrorShake(error),
             placeholder = { placeholder?.let { Text(it) } },
             isError = error != null,
             singleLine = true,
