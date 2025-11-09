@@ -8,10 +8,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -38,14 +37,15 @@ fun CartScreen(
     val studentDiscount by cartViewModel.studentDiscount.collectAsState()
     val nfcState by nfcViewModel.nfcState.collectAsState()
     
-    val subtotal by remember {
-        derivedStateOf { cartViewModel.calculateSubtotal() }
+    // Recalcular cuando cambian cartItems o studentDiscount
+    val subtotal = remember(cartItems) {
+        cartViewModel.calculateSubtotal()
     }
-    val discount by remember {
-        derivedStateOf { cartViewModel.calculateDiscount() }
+    val discount = remember(studentDiscount, cartItems) {
+        cartViewModel.calculateDiscount()
     }
-    val total by remember {
-        derivedStateOf { cartViewModel.calculateTotal() }
+    val total = remember(studentDiscount, cartItems) {
+        cartViewModel.calculateTotal()
     }
     
     var showClearDialog by remember { mutableStateOf(false) }
@@ -213,12 +213,11 @@ fun CartScreen(
                                             showNFCDialog = true
                                         }
                                     }
-                                } else {
-                                    // Desactivar descuento
-                                    cartViewModel.toggleStudentDiscount()
                                 }
+                                // No hacer nada si ya está aplicado (no se puede desactivar)
                             },
                             modifier = Modifier.fillMaxWidth(),
+                            enabled = !studentDiscount, // Deshabilitar cuando está aplicado
                             colors = ButtonDefaults.outlinedButtonColors(
                                 containerColor = if (studentDiscount) 
                                     MaterialTheme.colorScheme.primaryContainer 
@@ -227,7 +226,7 @@ fun CartScreen(
                             )
                         ) {
                             Icon(
-                                imageVector = if (studentDiscount) Icons.Default.Check else Icons.Default.Nfc,
+                                imageVector = if (studentDiscount) Icons.Default.Check else Icons.Default.AccountCircle,
                                 contentDescription = null,
                                 modifier = Modifier.size(18.dp)
                             )
@@ -330,7 +329,7 @@ fun CartScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
-                        imageVector = Icons.Default.Nfc,
+                        imageVector = Icons.Default.AccountCircle,
                         contentDescription = "NFC",
                         tint = MaterialTheme.colorScheme.primary
                     )
@@ -363,7 +362,7 @@ fun CartScreen(
                         }
                         is NFCState.Success -> {
                             Icon(
-                                imageVector = Icons.Default.CheckCircle,
+                                imageVector = Icons.Default.Check,
                                 contentDescription = "Éxito",
                                 tint = MaterialTheme.colorScheme.primary,
                                 modifier = Modifier.size(48.dp)
@@ -377,7 +376,7 @@ fun CartScreen(
                         }
                         is NFCState.Error -> {
                             Icon(
-                                imageVector = Icons.Default.Error,
+                                imageVector = Icons.Default.Warning,
                                 contentDescription = "Error",
                                 tint = MaterialTheme.colorScheme.error,
                                 modifier = Modifier.size(48.dp)
