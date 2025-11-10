@@ -3,9 +3,16 @@ package com.example.huerto_hogar.ui.theme.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Create
@@ -105,12 +112,17 @@ fun AppNavigationContainer() {
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-            ModalDrawerSheet {
+            ModalDrawerSheet(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .windowInsetsPadding(WindowInsets.navigationBars)
+            ) {
                 //Logo cabecero//
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                        .verticalScroll(rememberScrollState()),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Image(
@@ -133,84 +145,7 @@ fun AppNavigationContainer() {
                 HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
                 Spacer(modifier = Modifier.padding(vertical = 4.dp))
 
-                if (currentUser == null) {
-                    NavigationDrawerItem(
-                        label = { Text("Iniciar Sesión") },
-                        selected = false,
-                        onClick = {
-                            scope.launch { drawerState.close() }
-                            navController.navigate(AppScreens.LoginScreen.route)
-                        },
-                        icon = {
-                            Icon(
-                                Icons.Default.AccountCircle,
-                                contentDescription = "Iniciar Sesión"
-                            )
-                        }
-                    )
 
-                    NavigationDrawerItem(
-                        label = { Text("Registrarse") },
-                        selected = false,
-                        onClick = {
-                            scope.launch { drawerState.close() }
-                            navController.navigate(AppScreens.RegistroScreen.route)
-                        },
-                        icon = {
-                            Icon(
-                                Icons.Default.Create,
-                                contentDescription = "Registrarse"
-                            )
-                        }
-                    )
-                } else {
-                    if (currentUser?.role == Role.ADMIN) {
-                        NavigationDrawerItem(
-                            label = { Text("Administración") },
-                            selected = false,
-                            onClick = {
-                                scope.launch { drawerState.close() }
-                                navController.navigate(
-                                    "admin_dashboard_screen"
-                                )
-                            },
-                            icon = {
-                                Icon(
-                                    Icons.Default.Person,
-                                    contentDescription = "Administración"
-                                )
-                            }
-                        )
-                    }
-                    NavigationDrawerItem(
-                        label = { Text("Configuración") },
-                        selected = false,
-                        onClick = {
-                            scope.launch { drawerState.close() }
-                            navController.navigate(AppScreens.UsSetScreen.route)
-                        },
-                        icon = {
-                            Icon(
-                                Icons.Default.Settings,
-                                contentDescription = "Configuración"
-                            )
-                        })
-
-                    NavigationDrawerItem(
-                        label = { Text("Cerrar Sesión") },
-                        selected = false,
-                        onClick = {
-                            scope.launch { drawerState.close() }
-                            showLogoutDialog = true
-                        },
-                        icon = {
-                            Icon(
-                                Icons.Default.AccountCircle,
-                                contentDescription = "Cerrar Sesión"
-                            )
-                        }
-                    )
-                }
                 NavigationDrawerItem(
                     label = { Text("Inicio") },
                     selected = false,
@@ -249,9 +184,89 @@ fun AppNavigationContainer() {
                     icon = { Icon(Icons.Default.Favorite, contentDescription = "Favoritos") }
                 )
 
+
+                if (currentUser?.role == Role.ADMIN) {
+                    NavigationDrawerItem(
+                        label = { Text("Administración") },
+                        selected = false,
+                        onClick = {
+                            scope.launch { drawerState.close() }
+                            navController.navigate(AppScreens.AdminDashboardScreen.route)
+                        },
+                        icon = {
+                            Icon(
+                                Icons.Default.Person,
+                                contentDescription = "Administración"
+                            )
+                        }
+                    )
+                }
+                if (currentUser != null) {
+                    NavigationDrawerItem(
+                        label = { Text("Configuración") },
+                        selected = false,
+                        onClick = {
+                            scope.launch { drawerState.close() }
+                            navController.navigate(AppScreens.UsSetScreen.route)
+                        },
+                        icon = {
+                            Icon(
+                                Icons.Default.Settings,
+                                contentDescription = "Configuración"
+                            )
+                        }
+                    )
+                }
                 Spacer(modifier = Modifier.weight(1f))
                 HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+                if (currentUser == null) {
+                    NavigationDrawerItem(
+                        label = { Text("Iniciar Sesión") },
+                        selected = false,
+                        onClick = {
+                            scope.launch { drawerState.close() }
+                            navController.navigate(AppScreens.LoginScreen.route)
+                        },
+                        icon = {
+                            Icon(
+                                Icons.Default.AccountCircle,
+                                contentDescription = "Iniciar Sesión"
+                            )
+                        }
+                    )
 
+                    NavigationDrawerItem(
+                        label = { Text("Registrarse") },
+                        selected = false,
+                        onClick = {
+                            scope.launch { drawerState.close() }
+                            navController.navigate(AppScreens.RegistroScreen.route)
+                        },
+                        icon = {
+                            Icon(
+                                Icons.Default.Create,
+                                contentDescription = "Registrarse"
+                            )
+                        }
+                    )
+                } else {
+                    NavigationDrawerItem(
+                        label = { Text("Cerrar Sesión") },
+                        selected = false,
+                        onClick = {
+                            scope.launch { drawerState.close() }
+                            showLogoutDialog = true
+                        },
+                        icon = {
+                            Icon(
+                                Icons.Default.AccountCircle,
+                                contentDescription = "Cerrar Sesión"
+                            )
+                        }
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
             }
         },
         gesturesEnabled = drawerState.isOpen,
