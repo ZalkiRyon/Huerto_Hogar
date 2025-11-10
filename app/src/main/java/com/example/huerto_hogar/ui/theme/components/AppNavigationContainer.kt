@@ -27,6 +27,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -80,6 +81,7 @@ fun AppNavigationContainer() {
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val showBarraCatalogo = remember { mutableStateOf(false) }
+    var showLogoutDialog by remember { mutableStateOf(false) }
 
     val scope = rememberCoroutineScope()
     val navController = rememberNavController()
@@ -185,12 +187,8 @@ fun AppNavigationContainer() {
                         label = { Text("Cerrar Sesión") },
                         selected = false,
                         onClick = {
-                            // TODO: DO FUNCTION TO LOGOUT
-                            userManager.setCurrentUser(null)
                             scope.launch { drawerState.close() }
-                            navController.navigate(AppScreens.HomeScreen.route) {
-                                popUpTo(AppScreens.HomeScreen.route) { inclusive = true }
-                            }
+                            showLogoutDialog = true
                         },
                         icon = {
                             Icon(
@@ -244,6 +242,19 @@ fun AppNavigationContainer() {
         },
         gesturesEnabled = drawerState.isOpen,
     ) {
+        // Diálogo de confirmación de logout
+        LogoutConfirmationDialog(
+            showDialog = showLogoutDialog,
+            onDismiss = { showLogoutDialog = false },
+            onConfirm = {
+                showLogoutDialog = false
+                userManager.setCurrentUser(null)
+                navController.navigate(AppScreens.HomeScreen.route) {
+                    popUpTo(AppScreens.HomeScreen.route) { inclusive = true }
+                }
+            }
+        )
+        
         Scaffold(
             // Menu de navegacion inferioor
             bottomBar = {
