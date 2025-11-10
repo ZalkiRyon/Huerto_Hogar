@@ -9,8 +9,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Create
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -51,13 +55,22 @@ import com.example.huerto_hogar.screen.OrganicosScreen
 import com.example.huerto_hogar.screen.RegistroScreen
 import com.example.huerto_hogar.screen.UsSetScreen
 import com.example.huerto_hogar.screen.VerdurasScreen
+import com.example.huerto_hogar.screen.admin.AdminDashboardScreen
+import com.example.huerto_hogar.screen.admin.AdminInventoryScreen
+import com.example.huerto_hogar.screen.admin.AdminUsersScreen
+import com.example.huerto_hogar.ui.theme.components.admin.AdminNavigationContainer
+import com.example.huerto_hogar.ui.theme.components.animations.fadeIn
+import com.example.huerto_hogar.ui.theme.components.animations.fadeOut
+import com.example.huerto_hogar.ui.theme.components.animations.scaleInWithFade
+import com.example.huerto_hogar.ui.theme.components.animations.scaleOutWithFade
+import com.example.huerto_hogar.ui.theme.components.animations.slideInFromBottomWithFade
+import com.example.huerto_hogar.ui.theme.components.animations.slideInFromRightWithFade
+import com.example.huerto_hogar.ui.theme.components.animations.slideOutToBottomWithFade
+import com.example.huerto_hogar.ui.theme.components.animations.slideOutToLeftWithFade
+import com.example.huerto_hogar.viewmodel.CartViewModel
 import com.example.huerto_hogar.viewmodel.LoginViewModel
 import com.example.huerto_hogar.viewmodel.RegisterUserViewModel
 import com.example.huerto_hogar.viewmodel.UserSettingsViewModel
-import com.example.huerto_hogar.viewmodel.CartViewModel
-import com.example.huerto_hogar.ui.theme.components.animations.*
-import com.example.huerto_hogar.ui.theme.components.admin.AdminNavigationContainer
-import com.example.huerto_hogar.screen.admin.*
 import kotlinx.coroutines.launch
 
 
@@ -67,7 +80,7 @@ fun AppNavigationContainer() {
     val cartViewModel: CartViewModel = viewModel()
 
     val currentUser by userManager.currentUser.collectAsState()
-    
+
     // Si el usuario es admin, mostrar panel de administración
     if (currentUser?.role == Role.ADMIN) {
         AdminNavigationContainer(
@@ -157,8 +170,8 @@ fun AppNavigationContainer() {
                             selected = false,
                             onClick = {
                                 scope.launch { drawerState.close() }
-                                navController.navigate(// TODO: ROUTE FOR ADMIN
-                                    Unit
+                                navController.navigate(
+                                    "admin_dashboard_screen"
                                 )
                             },
                             icon = {
@@ -198,43 +211,44 @@ fun AppNavigationContainer() {
                         }
                     )
                 }
-//                NavigationDrawerItem(
-//                    label = { Text("Inicio") },
-//                    selected = false,
-//                    onClick = {
-//                        scope.launch { drawerState.close() }
-//                        navController.navigate(AppScreens.HomeScreen.route)
-//                    },
-//                    icon = { Icon(Icons.Default.Home, contentDescription = "Inicio") }
-//                )
-//                NavigationDrawerItem(
-//                    label = { Text("Catálogo") },
-//                    selected = false,
-//                    onClick = {
-//                        scope.launch { drawerState.close() }
-//                        navController.navigate(AppScreens.CatalogScreen.route)
-//                    },
-//                    icon = { Icon(Icons.Default.Search, contentDescription = "Catálogo") }
-//                )
-//                NavigationDrawerItem(
-//                    label = { Text("Carrito") },
-//                    selected = false,
-//                    onClick = {
-//                        scope.launch { drawerState.close() }
-//                        navController.navigate(AppScreens.CartScreen.route)
-//                    },
-//                    icon = { Icon(Icons.Default.ShoppingCart, contentDescription = "Carrito") }
-//                )
-//                NavigationDrawerItem(
-//                    label = { Text("Favoritos") },
-//                    selected = false,
-//                    onClick = {
-//                        scope.launch { drawerState.close() }
-//                        navController.navigate(AppScreens.FavScreen.route)
-//                    },
-//                    icon = { Icon(Icons.Default.Favorite, contentDescription = "Favoritos") }
-//                )
-//
+                NavigationDrawerItem(
+                    label = { Text("Inicio") },
+                    selected = false,
+                    onClick = {
+                        scope.launch { drawerState.close() }
+                        navController.navigate(AppScreens.HomeScreen.route)
+                    },
+                    icon = { Icon(Icons.Default.Home, contentDescription = "Inicio") }
+                )
+                NavigationDrawerItem(
+                    label = { Text("Catálogo") },
+                    selected = false,
+                    onClick = {
+                        scope.launch { drawerState.close() }
+                        // TODO: NAV TO CATALOG
+                        //navController.navigate()
+                    },
+                    icon = { Icon(Icons.Default.Search, contentDescription = "Catálogo") }
+                )
+                NavigationDrawerItem(
+                    label = { Text("Carrito") },
+                    selected = false,
+                    onClick = {
+                        scope.launch { drawerState.close() }
+                        navController.navigate(AppScreens.CartScreen.route)
+                    },
+                    icon = { Icon(Icons.Default.ShoppingCart, contentDescription = "Carrito") }
+                )
+                NavigationDrawerItem(
+                    label = { Text("Favoritos") },
+                    selected = false,
+                    onClick = {
+                        scope.launch { drawerState.close() }
+                        navController.navigate(AppScreens.FavScreen.route)
+                    },
+                    icon = { Icon(Icons.Default.Favorite, contentDescription = "Favoritos") }
+                )
+
                 Spacer(modifier = Modifier.weight(1f))
                 HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
 
@@ -249,12 +263,11 @@ fun AppNavigationContainer() {
             onConfirm = {
                 showLogoutDialog = false
                 userManager.setCurrentUser(null)
-                navController.navigate(AppScreens.HomeScreen.route) {
-                    popUpTo(AppScreens.HomeScreen.route) { inclusive = true }
-                }
+                cartViewModel.clearCart()
+                navController.navigate(AppScreens.HomeScreen.route)
             }
         )
-        
+
         Scaffold(
             // Menu de navegacion inferioor
             bottomBar = {
@@ -281,10 +294,10 @@ fun AppNavigationContainer() {
                     route = AppScreens.HomeScreen.route,
                     enterTransition = { fadeIn() },
                     exitTransition = { fadeOut() }
-                ) { 
-                    HomeScreen(navController = navController) 
+                ) {
+                    HomeScreen(navController = navController)
                 }
-                
+
                 composable(
                     route = AppScreens.LoginScreen.route,
                     enterTransition = { scaleInWithFade() },
@@ -294,7 +307,7 @@ fun AppNavigationContainer() {
                     loginVM.userManager = userManager
                     LoginScreen(navController = navController, loginVM)
                 }
-                
+
                 composable(
                     route = AppScreens.RegistroScreen.route,
                     enterTransition = { slideInFromBottomWithFade() },
@@ -304,26 +317,26 @@ fun AppNavigationContainer() {
                     registerVM.userManager = userManager
                     RegistroScreen(navController, registerVM)
                 }
-                
+
                 composable(
                     route = AppScreens.FavScreen.route,
                     enterTransition = { slideInFromRightWithFade() },
                     exitTransition = { slideOutToLeftWithFade() }
-                ) { 
-                    FavScreen(navController = navController) 
+                ) {
+                    FavScreen(navController = navController)
                 }
-                
+
                 composable(
                     route = AppScreens.CartScreen.route,
                     enterTransition = { slideInFromRightWithFade() },
                     exitTransition = { slideOutToLeftWithFade() }
-                ) { 
+                ) {
                     CartScreen(
                         navController = navController,
                         cartViewModel = cartViewModel
-                    ) 
+                    )
                 }
-                
+
                 composable(
                     route = AppScreens.UsSetScreen.route,
                     enterTransition = { slideInFromBottomWithFade() },
@@ -333,48 +346,48 @@ fun AppNavigationContainer() {
                     settingsVM.userManager = userManager
                     UsSetScreen(navController = navController, viewModel = settingsVM)
                 }
-                
+
                 composable(
                     route = AppScreens.BlogScreen.route,
                     enterTransition = { fadeIn() },
                     exitTransition = { fadeOut() }
-                ) { 
-                    BlogScreen(navController = navController) 
+                ) {
+                    BlogScreen(navController = navController)
                 }
-                
+
                 composable(
                     route = AppScreens.FrutasScreen.route,
                     enterTransition = { fadeIn() },
                     exitTransition = { fadeOut() }
-                ) { 
+                ) {
                     FrutasScreen(
                         navController = navController,
                         cartViewModel = cartViewModel
-                    ) 
+                    )
                 }
-                
+
                 composable(
                     route = AppScreens.OrganicosScreen.route,
                     enterTransition = { fadeIn() },
                     exitTransition = { fadeOut() }
-                ) { 
+                ) {
                     OrganicosScreen(
                         navController = navController,
                         cartViewModel = cartViewModel
-                    ) 
+                    )
                 }
-                
+
                 composable(
                     route = AppScreens.VerdurasScreen.route,
                     enterTransition = { fadeIn() },
                     exitTransition = { fadeOut() }
-                ) { 
+                ) {
                     VerdurasScreen(
                         navController = navController,
                         cartViewModel = cartViewModel
-                    ) 
+                    )
                 }
-                
+
                 // Admin Routes
                 composable(
                     route = AppScreens.AdminDashboardScreen.route,
@@ -383,7 +396,7 @@ fun AppNavigationContainer() {
                 ) {
                     AdminDashboardScreen(navController = navController)
                 }
-                
+
                 composable(
                     route = AppScreens.AdminInventoryScreen.route,
                     enterTransition = { slideInFromRightWithFade() },
@@ -391,7 +404,7 @@ fun AppNavigationContainer() {
                 ) {
                     AdminInventoryScreen(navController = navController)
                 }
-                
+
                 composable(
                     route = AppScreens.AdminUsersScreen.route,
                     enterTransition = { slideInFromRightWithFade() },
