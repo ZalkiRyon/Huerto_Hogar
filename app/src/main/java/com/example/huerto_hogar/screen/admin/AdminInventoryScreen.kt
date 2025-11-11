@@ -1,14 +1,44 @@
 package com.example.huerto_hogar.screen.admin
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,16 +57,16 @@ import com.example.huerto_hogar.ui.theme.components.animations.bounceInEffect
 fun AdminInventoryScreen(navController: NavController) {
     var selectedCategory by remember { mutableStateOf<ProductCategory?>(null) }
     var searchQuery by remember { mutableStateOf("") }
-    
+
     val filteredProducts = remember(selectedCategory, searchQuery) {
         MockProducts.products.filter { product ->
             val matchesCategory = selectedCategory == null || product.category == selectedCategory
-            val matchesSearch = searchQuery.isEmpty() || 
-                product.name.contains(searchQuery, ignoreCase = true)
+            val matchesSearch = searchQuery.isEmpty() ||
+                    product.name.contains(searchQuery, ignoreCase = true)
             matchesCategory && matchesSearch
         }
     }
-    
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -55,7 +85,7 @@ fun AdminInventoryScreen(navController: NavController) {
                 Text(
                     text = "Inventario",
                     style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
-                    color = MaterialTheme.colorScheme.primary,
+                    color = MaterialTheme.colorScheme.onBackground,
                     maxLines = 2
                 )
                 Text(
@@ -64,33 +94,58 @@ fun AdminInventoryScreen(navController: NavController) {
                     color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
                 )
             }
-            
+
             Button(
                 onClick = { /* TODO: Add product */ },
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary
+                ),
+                shape = RoundedCornerShape(12.dp),
                 modifier = Modifier.bounceInEffect()
             ) {
-                Icon(Icons.Default.Add, contentDescription = "Crear", modifier = Modifier.size(18.dp))
+                Icon(
+                    Icons.Default.Add,
+                    contentDescription = "Crear",
+                    modifier = Modifier.size(18.dp)
+                )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text("Crear")
             }
         }
-        
+
         Spacer(modifier = Modifier.height(16.dp))
-        
+
         // Search Bar
         OutlinedTextField(
             value = searchQuery,
             onValueChange = { searchQuery = it },
             modifier = Modifier.fillMaxWidth(),
-            placeholder = { Text("Buscar productos...") },
-            leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Buscar") },
+            placeholder = {
+                Text(
+                    "Buscar productos...",
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+                )
+            },
+            leadingIcon = {
+                Icon(
+                    Icons.Default.Search,
+                    contentDescription = "Buscar",
+                    tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                )
+            },
             singleLine = true,
-            shape = RoundedCornerShape(12.dp)
+            shape = RoundedCornerShape(12.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                unfocusedBorderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
+                focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                unfocusedTextColor = MaterialTheme.colorScheme.onSurface
+            )
         )
-        
+
         Spacer(modifier = Modifier.height(12.dp))
-        
+
         // Category Filters
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -99,20 +154,32 @@ fun AdminInventoryScreen(navController: NavController) {
             FilterChip(
                 selected = selectedCategory == null,
                 onClick = { selectedCategory = null },
-                label = { Text("Todos") }
+                label = { Text("Todos") },
+                colors = FilterChipDefaults.filterChipColors(
+                    selectedContainerColor = MaterialTheme.colorScheme.primary,
+                    selectedLabelColor = MaterialTheme.colorScheme.onPrimary,
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    labelColor = MaterialTheme.colorScheme.onSurface
+                )
             )
-            
+
             ProductCategory.values().forEach { category ->
                 FilterChip(
                     selected = selectedCategory == category,
                     onClick = { selectedCategory = category },
-                    label = { Text(category.displayName) }
+                    label = { Text(category.displayName) },
+                    colors = FilterChipDefaults.filterChipColors(
+                        selectedContainerColor = MaterialTheme.colorScheme.primary,
+                        selectedLabelColor = MaterialTheme.colorScheme.onPrimary,
+                        containerColor = MaterialTheme.colorScheme.surface,
+                        labelColor = MaterialTheme.colorScheme.onSurface
+                    )
                 )
             }
         }
-        
+
         Spacer(modifier = Modifier.height(16.dp))
-        
+
         // Products List
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -128,7 +195,7 @@ fun AdminInventoryScreen(navController: NavController) {
 fun ProductInventoryCard(product: Product) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Row(
@@ -141,18 +208,19 @@ fun ProductInventoryCard(product: Product) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = product.name,
-                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
+                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                    color = MaterialTheme.colorScheme.onSurface
                 )
-                
+
                 Spacer(modifier = Modifier.height(4.dp))
-                
+
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     // Category Badge
                     Surface(
-                        shape = RoundedCornerShape(6.dp),
+                        shape = RoundedCornerShape(8.dp),
                         color = MaterialTheme.colorScheme.primaryContainer
                     ) {
                         Text(
@@ -162,14 +230,14 @@ fun ProductInventoryCard(product: Product) {
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                         )
                     }
-                    
+
                     // Stock Status
                     val stockColor = when {
-                        product.stock == 0 -> Color.Red
-                        product.stock < 20 -> Color(0xFFFF9800)
-                        else -> Color(0xFF4CAF50)
+                        product.stock == 0 -> MaterialTheme.colorScheme.error
+                        product.stock < 20 ->  MaterialTheme.colorScheme.error.copy(alpha = 0.7f)
+                        else ->  MaterialTheme.colorScheme.tertiary
                     }
-                    
+
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(4.dp),
                         verticalAlignment = Alignment.CenterVertically
@@ -187,16 +255,16 @@ fun ProductInventoryCard(product: Product) {
                         )
                     }
                 }
-                
+
                 Spacer(modifier = Modifier.height(4.dp))
-                
+
                 Text(
                     text = "$${product.price}",
                     style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
                     color = MaterialTheme.colorScheme.primary
                 )
             }
-            
+
             // Action Buttons
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -204,7 +272,8 @@ fun ProductInventoryCard(product: Product) {
                 IconButton(
                     onClick = { /* TODO: Edit */ },
                     colors = IconButtonDefaults.iconButtonColors(
-                        containerColor = MaterialTheme.colorScheme.primaryContainer
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        contentColor = MaterialTheme.colorScheme.primary
                     )
                 ) {
                     Icon(
@@ -213,11 +282,12 @@ fun ProductInventoryCard(product: Product) {
                         tint = MaterialTheme.colorScheme.primary
                     )
                 }
-                
+
                 IconButton(
                     onClick = { /* TODO: Delete */ },
                     colors = IconButtonDefaults.iconButtonColors(
-                        containerColor = Color.Red.copy(alpha = 0.1f)
+                        containerColor = Color.Red.copy(alpha = 0.1f),
+                        contentColor = MaterialTheme.colorScheme.error
                     )
                 ) {
                     Icon(

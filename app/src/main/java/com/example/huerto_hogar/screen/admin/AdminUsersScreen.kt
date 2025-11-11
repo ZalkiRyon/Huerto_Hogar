@@ -66,7 +66,7 @@ fun AdminUsersScreen(
                 Text(
                     text = "Gestión de Usuarios",
                     style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
-                    color = MaterialTheme.colorScheme.primary,
+                    color = MaterialTheme.colorScheme.onBackground,
                     maxLines = 2
                 )
                 Text(
@@ -167,9 +167,9 @@ fun UserManagementCard(user: User) {
                     modifier = Modifier.size(48.dp),
                     shape = CircleShape,
                     color = when(user.role) {
-                        Role.ADMIN -> Color(0xFFE91E63)
-                        Role.SALESMAN -> Color(0xFF2196F3)
-                        Role.CLIENT -> Color(0xFF4CAF50)
+                        Role.ADMIN -> MaterialTheme.colorScheme.error
+                        Role.SALESMAN -> MaterialTheme.colorScheme.secondary
+                        Role.CLIENT -> MaterialTheme.colorScheme.tertiary
                     }
                 ) {
                     Box(
@@ -202,9 +202,9 @@ fun UserManagementCard(user: User) {
                     Surface(
                         shape = RoundedCornerShape(6.dp),
                         color = when(user.role) {
-                            Role.ADMIN -> Color(0xFFE91E63).copy(alpha = 0.1f)
-                            Role.SALESMAN -> Color(0xFF2196F3).copy(alpha = 0.1f)
-                            Role.CLIENT -> Color(0xFF4CAF50).copy(alpha = 0.1f)
+                            Role.ADMIN -> MaterialTheme.colorScheme.error.copy(alpha = 0.1f)
+                            Role.SALESMAN -> MaterialTheme.colorScheme.secondary.copy(alpha = 0.1f)
+                            Role.CLIENT -> MaterialTheme.colorScheme.tertiary.copy(alpha = 0.1f)
                         }
                     ) {
                         Text(
@@ -215,9 +215,9 @@ fun UserManagementCard(user: User) {
                             },
                             style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
                             color = when(user.role) {
-                                Role.ADMIN -> Color(0xFFE91E63)
-                                Role.SALESMAN -> Color(0xFF2196F3)
-                                Role.CLIENT -> Color(0xFF4CAF50)
+                                Role.ADMIN -> MaterialTheme.colorScheme.error
+                                Role.SALESMAN -> MaterialTheme.colorScheme.secondary
+                                Role.CLIENT -> MaterialTheme.colorScheme.tertiary
                             },
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                         )

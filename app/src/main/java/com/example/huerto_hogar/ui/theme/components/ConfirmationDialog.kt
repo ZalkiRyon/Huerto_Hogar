@@ -38,8 +38,9 @@ fun ConfirmationDialog(
                 Button(
                     onClick = onConfirm,
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.error
-                    )
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary
+                    ),
                 ) {
                     Text(confirmButtonText)
                 }

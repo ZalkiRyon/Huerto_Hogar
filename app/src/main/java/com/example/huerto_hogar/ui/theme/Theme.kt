@@ -12,50 +12,55 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
-    // green for buttons
     primary = Emerald,
     onPrimary = Color.White,
-    // background cards
-    surface = SurfaceDark,
-    // background screen
+    primaryContainer = PrimaryContainerDark,
+    onPrimaryContainer = OnPrimaryContainerDark,
+
+    secondary = SecondaryDark,
+    onSecondary = OnSecondaryDark,
+
+    tertiary = TertiaryDark,
+    onTertiary = OnTertiaryDark,
+
     background = BackgroundDark,
-    //  principal text
-    onSurface = PrimaryTextDark,
     onBackground = PrimaryTextDark,
 
-    surfaceVariant = SurfaceDark.copy(alpha = 0.8f),
+    surface = SurfaceDark,
+    onSurface = PrimaryTextDark,
+    surfaceVariant = SurfaceVariantDark,
     onSurfaceVariant = SecondaryTextDark,
-    outline = SecondaryTextDark.copy(alpha = 0.5f)
+
+    error = ErrorDark,
+    onError = OnErrorDark,
+    errorContainer = ErrorContainerDark,
+    onErrorContainer = OnErrorContainerDark
 )
 
 private val LightColorScheme = lightColorScheme(
-    // Green for buttons
     primary = Emerald,
-    // text over green
     onPrimary = Color.White,
-    // cards
-    surface = SurfaceLight,
-    // background screen
+    primaryContainer = PrimaryContainerLight,
+    onPrimaryContainer = OnPrimaryContainerLight,
+
+    secondary = SecondaryLight,
+    onSecondary = OnSecondaryLight,
+
+    tertiary = TertiaryLight,
+    onTertiary = OnTertiaryLight,
+
     background = BackgroundLight,
-    // principal text over surface
-    onSurface = PrimaryTextLight,
-    // principal text over background
     onBackground = PrimaryTextLight,
 
-    surfaceVariant = Color(0xFFE8E8E8),
+    surface = SurfaceLight,
+    onSurface = PrimaryTextLight,
+    surfaceVariant = SurfaceVariantLight,
     onSurfaceVariant = SecondaryTextLight,
-    outline = SecondaryTextLight.copy(alpha = 0.3f)
 
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+    error = ErrorLight,
+    onError = OnErrorLight,
+    errorContainer = ErrorContainerLight,
+    onErrorContainer = OnErrorContainerLight
 )
 
 @Composable

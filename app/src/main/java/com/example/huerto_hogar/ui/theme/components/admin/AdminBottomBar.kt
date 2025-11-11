@@ -6,8 +6,16 @@ import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
+import androidx.compose.material.icons.filled.ExitToApp
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,19 +44,19 @@ sealed class AdminBottomNavItem(
         Icons.Default.Home,
         "Dashboard"
     )
-    
+
     object Inventory : AdminBottomNavItem(
         AppScreens.AdminInventoryScreen.route,
         Icons.Default.List,
         "Inventario"
     )
-    
+
     object Users : AdminBottomNavItem(
         AppScreens.AdminUsersScreen.route,
         Icons.Default.Person,
         "Usuarios"
     )
-    
+
     object Logout : AdminBottomNavItem(
         "logout",
         Icons.Default.ExitToApp,
@@ -63,7 +71,7 @@ fun AdminBottomBar(
 ) {
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
     var showLogoutDialog by remember { mutableStateOf(false) }
-    
+
     // Diálogo de confirmación de logout usando componente reutilizable
     ConfirmationDialog(
         showDialog = showLogoutDialog,
@@ -74,8 +82,10 @@ fun AdminBottomBar(
         },
         message = "¿Estás seguro de que deseas cerrar sesión del panel de administración?"
     )
-    
+
     BottomAppBar(
+        containerColor = MaterialTheme.colorScheme.surface,
+        contentColor = MaterialTheme.colorScheme.onSurface,
         content = {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -87,7 +97,7 @@ fun AdminBottomBar(
                     AdminBottomNavItem.Users,
                     AdminBottomNavItem.Logout
                 )
-                
+
                 items.forEach { item ->
                     val isSelected = currentRoute == item.route
                     val scale by animateFloatAsState(
@@ -98,7 +108,7 @@ fun AdminBottomBar(
                         ),
                         label = "admin_icon_scale_${item.label}"
                     )
-                    
+
                     NavigationBarItem(
                         selected = isSelected,
                         onClick = {
@@ -125,9 +135,9 @@ fun AdminBottomBar(
                         colors = NavigationBarItemDefaults.colors(
                             selectedIconColor = MaterialTheme.colorScheme.primary,
                             selectedTextColor = MaterialTheme.colorScheme.primary,
-                            indicatorColor = MaterialTheme.colorScheme.primaryContainer,
-                            unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                            unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
+                            unselectedIconColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                            unselectedTextColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                            indicatorColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f)
                         )
                     )
                 }

@@ -55,7 +55,7 @@ fun AdminDashboardScreen(
         Text(
             text = "Panel de Administración",
             style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
-            color = MaterialTheme.colorScheme.primary,
+            color = MaterialTheme.colorScheme.onBackground,
             maxLines = 2
         )
         
@@ -76,7 +76,7 @@ fun AdminDashboardScreen(
                 title = "Ventas Hoy",
                 value = "$12,450",
                 icon = Icons.Default.ShoppingCart,
-                color = Color(0xFF4CAF50),
+                color = MaterialTheme.colorScheme.tertiary,
                 modifier = Modifier.weight(1f)
             )
             
@@ -84,7 +84,7 @@ fun AdminDashboardScreen(
                 title = "Productos",
                 value = totalProducts.toString(),
                 icon = Icons.Default.List,
-                color = Color(0xFF2196F3),
+                color = MaterialTheme.colorScheme.secondary,
                 modifier = Modifier.weight(1f)
             )
         }
@@ -97,7 +97,7 @@ fun AdminDashboardScreen(
                 title = "Clientes",
                 value = clientsCount.toString(),
                 icon = Icons.Default.Person,
-                color = Color(0xFFFF9800),
+                color = MaterialTheme.colorScheme.error,
                 modifier = Modifier.weight(1f)
             )
             
@@ -105,7 +105,7 @@ fun AdminDashboardScreen(
                 title = "Pedidos",
                 value = "87",
                 icon = Icons.Default.Star,
-                color = Color(0xFF9C27B0),
+                color = MaterialTheme.colorScheme.errorContainer,
                 modifier = Modifier.weight(1f)
             )
         }
