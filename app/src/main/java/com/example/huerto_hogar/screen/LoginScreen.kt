@@ -25,7 +25,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -33,13 +32,13 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.huerto_hogar.model.LoginResult
 import com.example.huerto_hogar.ui.theme.components.InputField
-import com.example.huerto_hogar.viewmodel.LoginViewModel
 import com.example.huerto_hogar.ui.theme.components.animations.bounceInEffect
 import com.example.huerto_hogar.ui.theme.components.animations.loadingPulseEffect
 import com.example.huerto_hogar.ui.theme.components.animations.pressClickEffect
+import com.example.huerto_hogar.viewmodel.LoginViewModel
 
 @Composable
-fun LoginScreen(navController: NavController, viewModel: LoginViewModel){
+fun LoginScreen(navController: NavController, viewModel: LoginViewModel) {
     val formState by viewModel.uiState.collectAsState()
     val context = LocalContext.current
     val scrollState = rememberScrollState()
@@ -54,18 +53,20 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel){
                         "¡Bienvenido, ${formState.loggedInUser?.name}!",
                         Toast.LENGTH_SHORT
                     ).show()
-                    
+
                     // Redirigir según rol del usuario
-                    val destination = if (formState.loggedInUser?.role == com.example.huerto_hogar.model.Role.ADMIN) {
-                        "admin_dashboard_screen"
-                    } else {
-                        "home_screen"
-                    }
-                    
+                    val destination =
+                        if (formState.loggedInUser?.role == com.example.huerto_hogar.model.Role.ADMIN) {
+                            "admin_dashboard_screen"
+                        } else {
+                            "home_screen"
+                        }
+
                     navController.navigate(destination) {
                         popUpTo(navController.graph.id) { inclusive = true }
                     }
                 }
+
                 LoginResult.INVALID_CREDENTIALS -> {
                     Toast.makeText(
                         context,
@@ -73,6 +74,7 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel){
                         Toast.LENGTH_LONG
                     ).show()
                 }
+
                 LoginResult.ERROR -> {
                     Toast.makeText(
                         context,
@@ -96,8 +98,11 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel){
             modifier = Modifier
                 .fillMaxWidth(0.9f)
                 .padding(vertical = 32.dp, horizontal = 16.dp)
-                .background(color = Color.White, shape = RoundedCornerShape(8.dp))
-                .padding(16.dp),
+                .background(
+                    color = MaterialTheme.colorScheme.surface,
+                    shape = RoundedCornerShape(16.dp)
+                )
+                .padding(24.dp),
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
@@ -105,6 +110,7 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel){
             Text(
                 text = "Iniciar Sesión",
                 style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
+                color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier
                     .padding(bottom = 16.dp)
                     .bounceInEffect(delay = 0)
@@ -140,13 +146,30 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel){
                     .fillMaxWidth()
                     .bounceInEffect(delay = 300)
                     .pressClickEffect()
+                    .height(56.dp)
                     .loadingPulseEffect(formState.isLoading),
-                enabled = !formState.isLoading && formState.errors.emailError == null && formState.errors.passwordError == null
+                enabled = !formState.isLoading && formState.errors.emailError == null && formState.errors.passwordError == null,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary,
+                    disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
+                    disabledContentColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.5f)
+                ),
+                shape = RoundedCornerShape(12.dp)
             ) {
                 if (formState.isLoading) {
-                    CircularProgressIndicator(color = Color.White, modifier = Modifier.height(20.dp))
+                    CircularProgressIndicator(
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        modifier = Modifier.height(24.dp)
+                    )
                 } else {
-                    Text(text = "ACCEDER", color = Color.White, fontSize = 18.sp)
+                    Text(
+                        text = "ACCEDER",
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        letterSpacing = 1.sp
+                    )
                 }
             }
 
@@ -157,9 +180,17 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel){
                     .fillMaxWidth()
                     .bounceInEffect(delay = 400)
                     .pressClickEffect(),
-                colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray)
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
+                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                ),
+                shape = RoundedCornerShape(12.dp)
             ) {
-                Text(text = "CREAR CUENTA", color = Color.Black)
+                Text(
+                    text = "CREAR CUENTA",
+                    fontWeight = FontWeight.SemiBold,
+                    letterSpacing = 1.sp
+                )
             }
         }
     }

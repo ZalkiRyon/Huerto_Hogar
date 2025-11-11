@@ -22,6 +22,10 @@ private val DarkColorScheme = darkColorScheme(
     //  principal text
     onSurface = PrimaryTextDark,
     onBackground = PrimaryTextDark,
+
+    surfaceVariant = SurfaceDark.copy(alpha = 0.8f),
+    onSurfaceVariant = SecondaryTextDark,
+    outline = SecondaryTextDark.copy(alpha = 0.5f)
 )
 
 private val LightColorScheme = lightColorScheme(
@@ -37,6 +41,10 @@ private val LightColorScheme = lightColorScheme(
     onSurface = PrimaryTextLight,
     // principal text over background
     onBackground = PrimaryTextLight,
+
+    surfaceVariant = Color(0xFFE8E8E8),
+    onSurfaceVariant = SecondaryTextLight,
+    outline = SecondaryTextLight.copy(alpha = 0.3f)
 
 
     /* Other default colors to override
