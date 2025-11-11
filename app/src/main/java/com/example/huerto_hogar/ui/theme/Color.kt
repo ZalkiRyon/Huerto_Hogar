@@ -16,18 +16,6 @@ val SecondaryTextDark = Color(0xFFAAAAAA)
 val BackgroundDark = Color(0xFF121212)
 val SurfaceDark = Color(0xFF1E1E1E)
 
-val SuccessLight = Color(0xFF4CAF50)
-val SuccessDark = Color(0xFF66BB6A)
-
-val InfoLight = Color(0xFF2196F3)
-val InfoDark = Color(0xFF42A5F5)
-
-val WarningLight = Color(0xFFFF9800)
-val WarningDark = Color(0xFFFFA726)
-
-val FeaturedLight = Color(0xFF9C27B0)
-val FeaturedDark = Color(0xFFAB47BC)
-
 val PrimaryContainerLight = Color(0xFFE8F5E9)
 val PrimaryContainerDark = Color(0xFF1B5E20)
 val OnPrimaryContainerLight = Color(0xFF1B5E20)

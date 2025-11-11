@@ -133,7 +133,7 @@ fun CartScreen(
         // Header
         Surface(
             modifier = Modifier.fillMaxWidth(),
-            color = MaterialTheme.colorScheme.primaryContainer,
+            color = MaterialTheme.colorScheme.primary,
             tonalElevation = 2.dp
         ) {
             Row(
@@ -148,12 +148,12 @@ fun CartScreen(
                         text = "Mi Carrito",
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary
+                        color = MaterialTheme.colorScheme.onPrimary
                     )
                     Text(
                         text = "${cartItems.size} producto(s)",
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
+                        color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f)
                     )
                 }
 
@@ -162,7 +162,7 @@ fun CartScreen(
                         Icon(
                             imageVector = Icons.Default.Delete,
                             contentDescription = "Vaciar carrito",
-                            tint = MaterialTheme.colorScheme.error
+                            tint = MaterialTheme.colorScheme.onPrimary
                         )
                     }
                 }
