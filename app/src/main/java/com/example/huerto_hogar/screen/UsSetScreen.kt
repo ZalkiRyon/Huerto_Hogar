@@ -51,8 +51,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
-import com.example.huerto_hogar.ui.theme.components.InputField
 import com.example.huerto_hogar.ui.theme.components.ConfirmationDialog
+import com.example.huerto_hogar.ui.theme.components.InputField
 import com.example.huerto_hogar.ui.theme.components.animations.bounceInEffect
 import com.example.huerto_hogar.viewmodel.UserSettingsViewModel
 import java.io.File
@@ -175,35 +175,41 @@ fun UsSetScreen(navController: NavController, viewModel: UserSettingsViewModel) 
             modifier = Modifier.height(4.dp)
         )
 
-        Box(
-            modifier = Modifier
-                .size(150.dp)
-                .clip(CircleShape)
-                .border(2.dp, MaterialTheme.colorScheme.primary, CircleShape)
-                .clickable { showSourceDialog.value = true },
-            contentAlignment = Alignment.Center
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
-
-            if (profileUri != null) {
-                Image(
-                    painter = rememberAsyncImagePainter(model = profileUri),
-                    contentDescription = "Foto de perfil",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxSize()
-                )
-            } else {
-                Icon(
-                    Icons.Default.AccountCircle,
-                    contentDescription = "Sin foto de perfil",
-                    modifier = Modifier.size(100.dp),
-                    tint = MaterialTheme.colorScheme.onSurface
-                )
+            Box(
+                modifier = Modifier
+                    .size(150.dp)
+                    .clip(CircleShape)
+                    .border(2.dp, MaterialTheme.colorScheme.primary, CircleShape)
+                    .clickable { showSourceDialog.value = true },
+                contentAlignment = Alignment.Center
+            ) {
+                if (profileUri != null) {
+                    Image(
+                        painter = rememberAsyncImagePainter(model = profileUri),
+                        contentDescription = "Foto de perfil",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                } else {
+                    Icon(
+                        Icons.Default.AccountCircle,
+                        contentDescription = "Sin foto de perfil",
+                        modifier = Modifier.size(100.dp),
+                        tint = MaterialTheme.colorScheme.onSurface
+                    )
+                }
             }
+
             Spacer(Modifier.height(8.dp))
+
             Text(
                 text = "Toca para cambiar la foto",
                 style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onPrimary
+                color = MaterialTheme.colorScheme.primary // Cambié a primary para que se vea mejor
             )
         }
 

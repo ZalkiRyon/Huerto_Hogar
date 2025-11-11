@@ -396,7 +396,8 @@ fun AppNavigationContainer() {
                 ) {
                     CartScreen(
                         navController = navController,
-                        cartViewModel = cartViewModel
+                        cartViewModel = cartViewModel,
+                        currentUser = currentUser,
                     )
                 }
 
