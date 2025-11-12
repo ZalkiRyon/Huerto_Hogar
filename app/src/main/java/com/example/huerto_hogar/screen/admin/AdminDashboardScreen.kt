@@ -21,21 +21,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import com.example.huerto_hogar.manager.UserManagerViewModel
 import com.example.huerto_hogar.model.MockProducts
 import com.example.huerto_hogar.model.Role
 import com.example.huerto_hogar.ui.theme.components.animations.pressClickEffectWithInteraction
+import com.example.huerto_hogar.viewmodel.SalesViewModel
 
 /**
  * Dashboard administrativo con estadísticas de la tienda (datos dinámicos).
  */
 @Composable
 fun AdminDashboardScreen(
-    navController: NavController,
-    userManager: UserManagerViewModel = viewModel()
+    userManager: UserManagerViewModel = viewModel(),
+    salesViewModel: SalesViewModel = viewModel()
 ) {
     val scrollState = rememberScrollState()
     
@@ -43,7 +42,8 @@ fun AdminDashboardScreen(
     val userList by userManager.userList.collectAsState()
     val totalProducts = MockProducts.products.size
     val clientsCount = userList.count { it.role == Role.CLIENT }
-    
+    val dailySales by salesViewModel.dailySales.collectAsState()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -75,7 +75,7 @@ fun AdminDashboardScreen(
         ) {
             StatCard(
                 title = "Ventas Hoy",
-                value = "$12,450",
+                value = "$${dailySales.toInt()}",
                 icon = Icons.Default.ShoppingCart,
                 color = Color(0xFF4CAF50),
                 modifier = Modifier.weight(1f)

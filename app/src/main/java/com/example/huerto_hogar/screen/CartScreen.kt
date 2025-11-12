@@ -24,13 +24,19 @@ import com.example.huerto_hogar.model.CartItem
 import com.example.huerto_hogar.viewmodel.CartViewModel
 import com.example.huerto_hogar.viewmodel.NFCViewModel
 import com.example.huerto_hogar.viewmodel.NFCState
+import com.example.huerto_hogar.viewmodel.SalesViewModel
 import com.example.huerto_hogar.manager.NFCManager
+import com.example.huerto_hogar.ui.theme.components.dialogs.Receipt
+import com.example.huerto_hogar.ui.theme.components.dialogs.ReceiptDialog
+import com.example.huerto_hogar.ui.theme.components.dialogs.generateReceiptNumber
+import com.example.huerto_hogar.ui.theme.components.dialogs.getCurrentDateTime
 
+@Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
 @Composable
 fun CartScreen(
-    navController: NavController,
     cartViewModel: CartViewModel = viewModel(),
-    nfcViewModel: NFCViewModel = viewModel()
+    nfcViewModel: NFCViewModel = viewModel(),
+    salesViewModel: SalesViewModel = viewModel()
 ) {
     val context = LocalContext.current
     val cartItems by cartViewModel.cartItems.collectAsState()
@@ -50,7 +56,9 @@ fun CartScreen(
     
     var showClearDialog by remember { mutableStateOf(false) }
     var showNFCDialog by remember { mutableStateOf(false) }
-    
+    var showReceiptDialog by remember { mutableStateOf(false) }
+    var currentReceipt by remember { mutableStateOf<Receipt?>(null) }
+
     val nfcManager = remember { NFCManager(context as MainActivity) }
     
     // Observar tags NFC
@@ -68,7 +76,7 @@ fun CartScreen(
     
     // Manejar estados NFC
     LaunchedEffect(nfcState) {
-        when (val state = nfcState) {
+        when (nfcState) {
             is NFCState.Success -> {
                 showNFCDialog = false
                 // El descuento ya se aplicó en el callback
@@ -296,7 +304,28 @@ fun CartScreen(
                         
                         // Checkout button
                         Button(
-                            onClick = { /* TODO: Implement checkout */ },
+                            onClick = {
+                                // Generar boleta
+                                val receipt = Receipt(
+                                    receiptNumber = generateReceiptNumber(),
+                                    date = getCurrentDateTime(),
+                                    items = cartItems,
+                                    subtotal = subtotal,
+                                    discount = discount,
+                                    total = total,
+                                    hasStudentDiscount = studentDiscount
+                                )
+
+                                // Registrar venta en el sistema
+                                salesViewModel.addSale(total)
+
+                                // Guardar boleta y mostrar modal
+                                currentReceipt = receipt
+                                showReceiptDialog = true
+
+                                // Limpiar carrito
+                                cartViewModel.clearCart()
+                            },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(56.dp),
@@ -436,6 +465,17 @@ fun CartScreen(
                 TextButton(onClick = { showClearDialog = false }) {
                     Text("Cancelar")
                 }
+            }
+        )
+    }
+
+    // Receipt Dialog
+    if (showReceiptDialog && currentReceipt != null) {
+        ReceiptDialog(
+            receipt = currentReceipt!!,
+            onDismiss = {
+                showReceiptDialog = false
+                currentReceipt = null
             }
         )
     }

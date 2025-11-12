@@ -55,16 +55,18 @@ import com.example.huerto_hogar.viewmodel.LoginViewModel
 import com.example.huerto_hogar.viewmodel.RegisterUserViewModel
 import com.example.huerto_hogar.viewmodel.UserSettingsViewModel
 import com.example.huerto_hogar.viewmodel.CartViewModel
+import com.example.huerto_hogar.viewmodel.SalesViewModel
 import com.example.huerto_hogar.ui.theme.components.animations.*
 import com.example.huerto_hogar.ui.theme.components.admin.AdminNavigationContainer
-import com.example.huerto_hogar.screen.admin.*
 import kotlinx.coroutines.launch
 
 
+@Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
 @Composable
 fun AppNavigationContainer() {
     val userManager: UserManagerViewModel = viewModel()
     val cartViewModel: CartViewModel = viewModel()
+    val salesViewModel: SalesViewModel = viewModel()
 
     val currentUser by userManager.currentUser.collectAsState()
     
@@ -72,6 +74,7 @@ fun AppNavigationContainer() {
     if (currentUser?.role == Role.ADMIN) {
         AdminNavigationContainer(
             userManager = userManager,
+            salesViewModel = salesViewModel,
             onLogout = {
                 userManager.setCurrentUser(null)
             }
@@ -151,24 +154,6 @@ fun AppNavigationContainer() {
                         }
                     )
                 } else {
-                    if (currentUser?.role == Role.ADMIN) {
-                        NavigationDrawerItem(
-                            label = { Text("Administración") },
-                            selected = false,
-                            onClick = {
-                                scope.launch { drawerState.close() }
-                                navController.navigate(// TODO: ROUTE FOR ADMIN
-                                    Unit
-                                )
-                            },
-                            icon = {
-                                Icon(
-                                    Icons.Default.Person,
-                                    contentDescription = "Administración"
-                                )
-                            }
-                        )
-                    }
                     NavigationDrawerItem(
                         label = { Text("Configuración") },
                         selected = false,
@@ -319,9 +304,9 @@ fun AppNavigationContainer() {
                     exitTransition = { slideOutToLeftWithFade() }
                 ) { 
                     CartScreen(
-                        navController = navController,
-                        cartViewModel = cartViewModel
-                    ) 
+                        cartViewModel = cartViewModel,
+                        salesViewModel = salesViewModel
+                    )
                 }
                 
                 composable(
@@ -373,31 +358,6 @@ fun AppNavigationContainer() {
                         navController = navController,
                         cartViewModel = cartViewModel
                     ) 
-                }
-                
-                // Admin Routes
-                composable(
-                    route = AppScreens.AdminDashboardScreen.route,
-                    enterTransition = { fadeIn() },
-                    exitTransition = { fadeOut() }
-                ) {
-                    AdminDashboardScreen(navController = navController)
-                }
-                
-                composable(
-                    route = AppScreens.AdminInventoryScreen.route,
-                    enterTransition = { slideInFromRightWithFade() },
-                    exitTransition = { slideOutToLeftWithFade() }
-                ) {
-                    AdminInventoryScreen(navController = navController)
-                }
-                
-                composable(
-                    route = AppScreens.AdminUsersScreen.route,
-                    enterTransition = { slideInFromRightWithFade() },
-                    exitTransition = { slideOutToLeftWithFade() }
-                ) {
-                    AdminUsersScreen(navController = navController)
                 }
             }
         }
