@@ -22,7 +22,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.huerto_hogar.AppScreens.AppScreens
-import com.example.huerto_hogar.ui.theme.components.LogoutConfirmationDialog
+import com.example.huerto_hogar.ui.theme.components.ConfirmationDialog
 
 /**
  * Navegación inferior para el panel de administración.
@@ -67,7 +67,7 @@ fun AdminBottomBar(
     var showLogoutDialog by remember { mutableStateOf(false) }
     
     // Diálogo de confirmación de logout usando componente reutilizable
-    LogoutConfirmationDialog(
+    ConfirmationDialog(
         showDialog = showLogoutDialog,
         onDismiss = { showLogoutDialog = false },
         onConfirm = {

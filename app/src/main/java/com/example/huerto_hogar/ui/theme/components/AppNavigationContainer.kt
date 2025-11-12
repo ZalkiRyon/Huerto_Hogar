@@ -228,7 +228,7 @@ fun AppNavigationContainer() {
         gesturesEnabled = drawerState.isOpen,
     ) {
         // Diálogo de confirmación de logout
-        LogoutConfirmationDialog(
+        ConfirmationDialog(
             showDialog = showLogoutDialog,
             onDismiss = { showLogoutDialog = false },
             onConfirm = {
