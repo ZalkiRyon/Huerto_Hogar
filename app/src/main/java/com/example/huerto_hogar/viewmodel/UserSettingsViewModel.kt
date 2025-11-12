@@ -58,28 +58,90 @@ class UserSettingsViewModel() : ViewModel() {
     }
 
     fun onChangeName(name: String) {
-        _uiState.update { it.copy(name = name, errors = it.errors.copy(nameError = null)) }
+        var error: String? = null
+        val trimmedName = name.trim()
+
+        if (trimmedName.isNotEmpty()) {
+            if (trimmedName.length < 4) {
+                error = "El nombre debe tener al menos 4 caracteres"
+            } else if (trimmedName.length > 20) {
+                error = "El nombre no puede exceder 20 caracteres"
+            } else if (!trimmedName.matches(Regex("^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$"))) {
+                error = "El nombre solo puede contener letras"
+            }
+        }
+
+        _uiState.update { it.copy(name = name, errors = it.errors.copy(nameError = error)) }
     }
 
     fun onChangeLastname(lastname: String) {
+        var error: String? = null
+        val trimmedLastname = lastname.trim()
+
+        if (trimmedLastname.isNotEmpty()) {
+            if (trimmedLastname.length < 4) {
+                error = "El apellido debe tener al menos 4 caracteres"
+            } else if (trimmedLastname.length > 20) {
+                error = "El apellido no puede exceder 20 caracteres"
+            } else if (!trimmedLastname.matches(Regex("^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$"))) {
+                error = "El apellido solo puede contener letras"
+            }
+        }
+
         _uiState.update {
             it.copy(
                 lastname = lastname,
-                errors = it.errors.copy(lastnameError = null)
+                errors = it.errors.copy(lastnameError = error)
             )
         }
     }
 
     fun onChangeEmail(email: String) {
-        _uiState.update { it.copy(email = email, errors = it.errors.copy(emailError = null)) }
+        var error: String? = null
+        val trimmedEmail = email.trim()
+
+        if (trimmedEmail.isNotEmpty() && !isValidDuocEmail(trimmedEmail)) {
+            error = "Solo se aceptan correos @duocuc.cl o @profesor.duoc.cl"
+        }
+
+        _uiState.update { it.copy(email = email, errors = it.errors.copy(emailError = error)) }
     }
 
     fun onChangeAddress(address: String) {
-        _uiState.update { it.copy(address = address, errors = it.errors.copy(addressError = null)) }
+        var error: String? = null
+        val trimmedAddress = address.trim()
+
+        if (trimmedAddress.isNotEmpty()) {
+            if (trimmedAddress.length < 5) {
+                error = "La direccion debe tener al menos 5 caracteres"
+            } else if (trimmedAddress.length > 40) {
+                error = "La direccion no puede exceder 40 caracteres"
+            }
+        }
+
+        _uiState.update { it.copy(address = address, errors = it.errors.copy(addressError = error)) }
     }
 
     fun onChangePhone(phone: String) {
-        _uiState.update { it.copy(phone = phone, errors = it.errors.copy(phoneError = null)) }
+        var error: String? = null
+        val trimmedPhone = phone.trim()
+
+        if (trimmedPhone.isNotEmpty()) {
+            if (!trimmedPhone.matches(Regex("^[0-9]+$"))) {
+                error = "El teléfono solo puede contener números"
+            } else if (trimmedPhone.length < 8) {
+                error = "El teléfono debe tener al menos 8 dígitos"
+            } else if (trimmedPhone.length > 9) {
+                error = "El teléfono no puede exceder 9 dígitos"
+            }
+        }
+
+        _uiState.update { it.copy(phone = phone, errors = it.errors.copy(phoneError = error)) }
+    }
+
+    private fun isValidDuocEmail(email: String): Boolean {
+        val lowerEmail = email.lowercase().trim()
+        return lowerEmail.endsWith("@duocuc.cl") || lowerEmail.endsWith("@profesor.duoc.cl")
     }
 
     fun onChangeCurrentPassword(password: String) {
@@ -169,23 +231,49 @@ class UserSettingsViewModel() : ViewModel() {
         var errors = UserSettingErrors()
         var hasError = false
 
-
+        // Validación de nombre
         if (state.name.isBlank()) {
             errors = errors.copy(nameError = "El nombre es obligatorio"); hasError = true
+        } else if (state.name.trim().length < 4) {
+            errors = errors.copy(nameError = "El nombre debe tener al menos 4 caracteres"); hasError = true
+        } else if (state.name.trim().length > 20) {
+            errors = errors.copy(nameError = "El nombre no puede exceder 20 caracteres"); hasError = true
+        } else if (!state.name.trim().matches(Regex("^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$"))) {
+            errors = errors.copy(nameError = "El nombre solo puede contener letras"); hasError = true
         }
+
+        // Validación de apellido
         if (state.lastname.isBlank()) {
             errors = errors.copy(lastnameError = "El apellido es obligatorio"); hasError = true
+        } else if (state.lastname.trim().length < 4) {
+            errors = errors.copy(lastnameError = "El apellido debe tener al menos 4 caracteres"); hasError = true
+        } else if (state.lastname.trim().length > 20) {
+            errors = errors.copy(lastnameError = "El apellido no puede exceder 20 caracteres"); hasError = true
+        } else if (!state.lastname.trim().matches(Regex("^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$"))) {
+            errors = errors.copy(lastnameError = "El apellido solo puede contener letras"); hasError = true
         }
+
+        // Validación de dirección
         if (state.address.isBlank()) {
             errors = errors.copy(addressError = "La direccion es obligatoria"); hasError = true
+        } else if (state.address.trim().length < 5) {
+            errors = errors.copy(addressError = "La direccion debe tener al menos 5 caracteres"); hasError = true
+        } else if (state.address.trim().length > 40) {
+            errors = errors.copy(addressError = "La direccion no puede exceder 40 caracteres"); hasError = true
         }
 
-
-        if (state.phone.trim().length > 9) {
-            errors = errors.copy(phoneError = "El número es demasiado largo"); hasError = true
+        // Validación de teléfono
+        if (state.phone.trim().isNotEmpty()) {
+            if (!state.phone.trim().matches(Regex("^[0-9]+$"))) {
+                errors = errors.copy(phoneError = "El teléfono solo puede contener números"); hasError = true
+            } else if (state.phone.trim().length < 8) {
+                errors = errors.copy(phoneError = "El teléfono debe tener al menos 8 dígitos"); hasError = true
+            } else if (state.phone.trim().length > 9) {
+                errors = errors.copy(phoneError = "El teléfono no puede exceder 9 dígitos"); hasError = true
+            }
         }
 
-
+        // Validación de email
         if (state.email.isBlank()) {
             errors = errors.copy(emailError = "El correo es obligatorio"); hasError = true
         } else if (state.email.length < 5) {
@@ -195,6 +283,8 @@ class UserSettingsViewModel() : ViewModel() {
         } else if (!isValidEmail(state.email)) {
             errors = errors.copy(emailError = "El formato del correo es incorrecto"); hasError =
                 true
+        } else if (!isValidDuocEmail(state.email)) {
+            errors = errors.copy(emailError = "Solo se aceptan correos @duocuc.cl o @profesor.duoc.cl"); hasError = true
         }
 
 

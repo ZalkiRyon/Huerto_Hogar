@@ -120,6 +120,7 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel) {
                 value = formState.email,
                 onValueChange = viewModel::onChangeEmail,
                 label = "Correo electrónico",
+                placeholder = "Solo @duocuc.cl o @profesor.duoc.cl",
                 error = formState.errors.emailError,
                 modifier = Modifier
                     .fillMaxWidth()

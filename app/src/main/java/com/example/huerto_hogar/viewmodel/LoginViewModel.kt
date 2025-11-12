@@ -17,7 +17,23 @@ class LoginViewModel() : ViewModel() {
     val uiState: StateFlow<LoginUser> = _uiState.asStateFlow()
 
     fun onChangeEmail(email: String) {
-        _uiState.update { it.copy(email = email, errors = it.errors.copy(emailError = null)) }
+        var error: String? = null
+        val trimmedEmail = email.trim()
+
+        if (trimmedEmail.isNotEmpty()) {
+            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(trimmedEmail).matches()) {
+                error = "El formato del correo es incorrecto"
+            } else if (!isValidDuocEmail(trimmedEmail)) {
+                error = "Solo se aceptan correos @duocuc.cl o @profesor.duoc.cl"
+            }
+        }
+
+        _uiState.update { it.copy(email = email, errors = it.errors.copy(emailError = error)) }
+    }
+
+    private fun isValidDuocEmail(email: String): Boolean {
+        val lowerEmail = email.lowercase().trim()
+        return lowerEmail.endsWith("@duocuc.cl") || lowerEmail.endsWith("@profesor.duoc.cl")
     }
 
     fun onChangePassword(password: String) {
@@ -31,9 +47,22 @@ class LoginViewModel() : ViewModel() {
     fun onClickLogin() {
         val currentState = _uiState.value
 
+        var emailError: String? = null
+        var passwordError: String? = null
 
-        val emailError = if (currentState.email.isBlank()) "El correo no puede estar vacío" else null
-        val passwordError = if (currentState.password.isBlank()) "La contraseña no puede estar vacía" else null
+        // Validación de email
+        if (currentState.email.isBlank()) {
+            emailError = "El correo no puede estar vacío"
+        } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(currentState.email).matches()) {
+            emailError = "El formato del correo es incorrecto"
+        } else if (!isValidDuocEmail(currentState.email)) {
+            emailError = "Solo se aceptan correos @duocuc.cl o @profesor.duoc.cl"
+        }
+
+        // Validación de contraseña
+        if (currentState.password.isBlank()) {
+            passwordError = "La contraseña no puede estar vacía"
+        }
 
         val hasLocalErrors = emailError != null || passwordError != null
 

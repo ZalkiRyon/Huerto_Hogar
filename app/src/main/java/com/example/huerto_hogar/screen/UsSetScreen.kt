@@ -244,6 +244,7 @@ fun UsSetScreen(navController: NavController, viewModel: UserSettingsViewModel) 
             value = formState.name,
             onValueChange = viewModel::onChangeName,
             label = "Nombre",
+            placeholder = "Entre 4 y 20 caracteres, solo letras",
             modifier = Modifier,
             error = formState.errors.nameError
         )
@@ -251,6 +252,7 @@ fun UsSetScreen(navController: NavController, viewModel: UserSettingsViewModel) 
             value = formState.lastname,
             onValueChange = viewModel::onChangeLastname,
             label = "Apellido",
+            placeholder = "Entre 4 y 20 caracteres, solo letras",
             modifier = Modifier,
             error = formState.errors.lastnameError
         )
@@ -258,6 +260,7 @@ fun UsSetScreen(navController: NavController, viewModel: UserSettingsViewModel) 
             value = formState.email,
             onValueChange = viewModel::onChangeEmail,
             label = "Correo Electrónico",
+            placeholder = "Solo @duocuc.cl o @profesor.duoc.cl",
             modifier = Modifier,
             error = formState.errors.emailError
         )
@@ -265,6 +268,7 @@ fun UsSetScreen(navController: NavController, viewModel: UserSettingsViewModel) 
             value = formState.address,
             onValueChange = viewModel::onChangeAddress,
             label = "Dirección",
+            placeholder = "Entre 5 y 40 caracteres",
             modifier = Modifier,
             error = formState.errors.addressError
         )
@@ -272,6 +276,7 @@ fun UsSetScreen(navController: NavController, viewModel: UserSettingsViewModel) 
             value = formState.phone,
             onValueChange = viewModel::onChangePhone,
             label = "Teléfono (Opcional)",
+            placeholder = "Solo números, entre 8 y 9 dígitos",
             modifier = Modifier,
             error = formState.errors.phoneError
         )

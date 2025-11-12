@@ -27,6 +27,8 @@ class RegisterUserViewModel() : ViewModel() {
             error = "El correo debe tener un minimo de 5 caracteres"
         } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             error = "El formato del correo es incorrecto"
+        } else if (!isValidDuocEmail(email)) {
+            error = "Solo se aceptan correos @duocuc.cl o @profesor.duoc.cl"
         }
 
         _uiState.update {
@@ -37,6 +39,11 @@ class RegisterUserViewModel() : ViewModel() {
                 errors = it.errors.copy(emailError = error)
             )
         }
+    }
+
+    private fun isValidDuocEmail(email: String): Boolean {
+        val lowerEmail = email.lowercase().trim()
+        return lowerEmail.endsWith("@duocuc.cl") || lowerEmail.endsWith("@profesor.duoc.cl")
     }
 
     fun onChangePassword(password: String) {
@@ -86,6 +93,12 @@ class RegisterUserViewModel() : ViewModel() {
 
         if (normalizeName.isEmpty()) {
             error = "El nombre es obligatorio"
+        } else if (normalizeName.length < 4) {
+            error = "El nombre debe tener al menos 4 caracteres"
+        } else if (normalizeName.length > 20) {
+            error = "El nombre no puede exceder 20 caracteres"
+        } else if (!normalizeName.matches(Regex("^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$"))) {
+            error = "El nombre solo puede contener letras"
         }
 
         _uiState.update {
@@ -107,6 +120,12 @@ class RegisterUserViewModel() : ViewModel() {
 
         if (normalizeLastname.isEmpty()) {
             error = "El apellido es obligatorio"
+        } else if (normalizeLastname.length < 4) {
+            error = "El apellido debe tener al menos 4 caracteres"
+        } else if (normalizeLastname.length > 20) {
+            error = "El apellido no puede exceder 20 caracteres"
+        } else if (!normalizeLastname.matches(Regex("^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$"))) {
+            error = "El apellido solo puede contener letras"
         }
 
         _uiState.update {
@@ -119,9 +138,16 @@ class RegisterUserViewModel() : ViewModel() {
 
     fun onChangePhone(phone: String) {
         var error: String? = null
+        val trimmedPhone = phone.trim()
 
-        if (phone.trim().length > 9) {
-            error = "El número es demasiado largo"
+        if (trimmedPhone.isNotEmpty()) {
+            if (!trimmedPhone.matches(Regex("^[0-9]+$"))) {
+                error = "El teléfono solo puede contener números"
+            } else if (trimmedPhone.length < 8) {
+                error = "El teléfono debe tener al menos 8 dígitos"
+            } else if (trimmedPhone.length > 9) {
+                error = "El teléfono no puede exceder 9 dígitos"
+            }
         }
 
         _uiState.update { currentState ->
@@ -134,8 +160,14 @@ class RegisterUserViewModel() : ViewModel() {
 
     fun onChangeAddress(address: String) {
         var error: String? = null
-        if (address.isBlank()) {
+        val trimmedAddress = address.trim()
+
+        if (trimmedAddress.isBlank()) {
             error = "La direccion es obligatoria"
+        } else if (trimmedAddress.length < 5) {
+            error = "La direccion debe tener al menos 5 caracteres"
+        } else if (trimmedAddress.length > 40) {
+            error = "La direccion no puede exceder 40 caracteres"
         }
 
         _uiState.update { currentState ->

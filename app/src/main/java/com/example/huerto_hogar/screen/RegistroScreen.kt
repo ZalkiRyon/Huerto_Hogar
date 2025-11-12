@@ -114,6 +114,7 @@ fun RegistroScreen(navController: NavController, viewModel: RegisterUserViewMode
                 value = formState.name,
                 onValueChange = { viewModel.onChangeName(it) },
                 label = "Nombre",
+                placeholder = "Entre 4 y 20 caracteres, solo letras",
                 error = formState.errors.nameError,
                 modifier = Modifier.bounceInEffect(delay = 50)
             )
@@ -122,6 +123,7 @@ fun RegistroScreen(navController: NavController, viewModel: RegisterUserViewMode
                 value = formState.lastname,
                 onValueChange = { viewModel.onChangeLastname(it) },
                 label = "Apellido",
+                placeholder = "Entre 4 y 20 caracteres, solo letras",
                 error = formState.errors.lastnameError,
                 modifier = Modifier.bounceInEffect(delay = 100)
             )
@@ -130,7 +132,7 @@ fun RegistroScreen(navController: NavController, viewModel: RegisterUserViewMode
                 value = formState.email,
                 onValueChange = { viewModel.onChangeEmail(it) },
                 label = "Correo electrónico",
-                placeholder = "Solo correos con formato email",
+                placeholder = "Solo @duocuc.cl o @profesor.duoc.cl",
                 error = formState.errors.emailError,
                 modifier = Modifier.bounceInEffect(delay = 150)
             )
@@ -157,6 +159,7 @@ fun RegistroScreen(navController: NavController, viewModel: RegisterUserViewMode
                 value = formState.address,
                 onValueChange = { viewModel.onChangeAddress(it) },
                 label = "Dirección",
+                placeholder = "Entre 5 y 40 caracteres",
                 error = formState.errors.addressError,
                 modifier = Modifier.bounceInEffect(delay = 300)
             )
@@ -164,7 +167,7 @@ fun RegistroScreen(navController: NavController, viewModel: RegisterUserViewMode
                 value = formState.phone,
                 onValueChange = { viewModel.onChangePhone(it) },
                 label = "Teléfono (opcional)",
-                placeholder = "Solo números, máximo 9 dígitos",
+                placeholder = "Solo números, entre 8 y 9 dígitos",
                 error = formState.errors.phoneError,
                 modifier = Modifier.bounceInEffect(delay = 350)
             )
