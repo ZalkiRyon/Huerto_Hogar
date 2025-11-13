@@ -64,6 +64,7 @@ import com.example.huerto_hogar.viewmodel.LoginViewModel
 import com.example.huerto_hogar.viewmodel.RegisterUserViewModel
 import com.example.huerto_hogar.viewmodel.UserSettingsViewModel
 import com.example.huerto_hogar.viewmodel.CartViewModel
+import com.example.huerto_hogar.viewmodel.FavoritesViewModel
 import com.example.huerto_hogar.viewmodel.SalesViewModel
 import com.example.huerto_hogar.ui.theme.components.animations.*
 import com.example.huerto_hogar.ui.theme.components.admin.AdminNavigationContainer
@@ -75,6 +76,7 @@ import kotlinx.coroutines.launch
 fun AppNavigationContainer() {
     val userManager: UserManagerViewModel = viewModel()
     val cartViewModel: CartViewModel = viewModel()
+    val favoritesViewModel: FavoritesViewModel = viewModel()
     val salesViewModel: SalesViewModel = viewModel()
 
     val currentUser by userManager.currentUser.collectAsState()
@@ -308,7 +310,11 @@ fun AppNavigationContainer() {
                     enterTransition = { slideInFromRightWithFade() },
                     exitTransition = { slideOutToLeftWithFade() }
                 ) { 
-                    FavScreen(navController = navController) 
+                    FavScreen(
+                        navController = navController,
+                        favoritesViewModel = favoritesViewModel,
+                        cartViewModel = cartViewModel
+                    ) 
                 }
                 
                 composable(
@@ -347,7 +353,8 @@ fun AppNavigationContainer() {
                 ) { 
                     FrutasScreen(
                         navController = navController,
-                        cartViewModel = cartViewModel
+                        cartViewModel = cartViewModel,
+                        favoritesViewModel = favoritesViewModel
                     ) 
                 }
                 
@@ -358,7 +365,8 @@ fun AppNavigationContainer() {
                 ) { 
                     OrganicosScreen(
                         navController = navController,
-                        cartViewModel = cartViewModel
+                        cartViewModel = cartViewModel,
+                        favoritesViewModel = favoritesViewModel
                     ) 
                 }
                 
@@ -369,7 +377,8 @@ fun AppNavigationContainer() {
                 ) { 
                     VerdurasScreen(
                         navController = navController,
-                        cartViewModel = cartViewModel
+                        cartViewModel = cartViewModel,
+                        favoritesViewModel = favoritesViewModel
                     ) 
                 }
                 
@@ -388,7 +397,8 @@ fun AppNavigationContainer() {
                 ) { 
                     AllProductsScreen(
                         navController = navController,
-                        cartViewModel = cartViewModel
+                        cartViewModel = cartViewModel,
+                        favoritesViewModel = favoritesViewModel
                     ) 
                 }
             }
