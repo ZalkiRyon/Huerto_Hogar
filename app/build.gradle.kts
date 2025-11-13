@@ -41,6 +41,7 @@ android {
 }
 
 dependencies {
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
     // Room
     val roomVersion = "2.8.1" // Usa la versión más reciente
     implementation("androidx.room:room-runtime:$roomVersion")

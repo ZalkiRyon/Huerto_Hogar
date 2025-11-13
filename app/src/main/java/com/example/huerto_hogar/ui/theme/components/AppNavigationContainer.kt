@@ -11,6 +11,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.List
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -29,20 +31,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.huerto_hogar.AppScreens.AppScreens
 import com.example.huerto_hogar.screen.BlogScreen
 import com.example.huerto_hogar.screen.CartScreen
+import com.example.huerto_hogar.screen.DetallesBlogsScreen
 import com.example.huerto_hogar.screen.FavScreen
 import com.example.huerto_hogar.screen.FrutasScreen
 import com.example.huerto_hogar.screen.HomeScreen
 import com.example.huerto_hogar.screen.LoginScreen
 import com.example.huerto_hogar.screen.OrganicosScreen
-import com.example.huerto_hogar.screen.RegistroScreen
+//import com.example.huerto_hogar.screen.RegistroScreen
 import com.example.huerto_hogar.screen.UsSettScreen
 import com.example.huerto_hogar.screen.VerdurasScreen
+import com.example.huerto_hogar.viewModel.BlogViewModel
 import kotlinx.coroutines.launch
 
 
@@ -76,6 +81,7 @@ fun AppNavigationContainer() {
                 HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
                 Spacer(modifier = Modifier.padding(vertical = 4.dp))
 
+                //Sección de usuario
                 NavigationDrawerItem(
                     label = {Text("Iniciar Sesión")},
                     selected = false,
@@ -106,46 +112,26 @@ fun AppNavigationContainer() {
                     }
                 )
 
-//                NavigationDrawerItem(
-//                    label = { Text("Inicio") },
-//                    selected = false,
-//                    onClick = {
-//                        scope.launch { drawerState.close() }
-//                        navController.navigate(AppScreens.HomeScreen.route)
-//                    },
-//                    icon = { Icon(Icons.Default.Home, contentDescription = "Inicio") }
-//                )
-//                NavigationDrawerItem(
-//                    label = { Text("Catálogo") },
-//                    selected = false,
-//                    onClick = {
-//                        scope.launch { drawerState.close() }
-//                        navController.navigate(AppScreens.CatalogScreen.route)
-//                    },
-//                    icon = { Icon(Icons.Default.Search, contentDescription = "Catálogo") }
-//                )
-//                NavigationDrawerItem(
-//                    label = { Text("Carrito") },
-//                    selected = false,
-//                    onClick = {
-//                        scope.launch { drawerState.close() }
-//                        navController.navigate(AppScreens.CartScreen.route)
-//                    },
-//                    icon = { Icon(Icons.Default.ShoppingCart, contentDescription = "Carrito") }
-//                )
-//                NavigationDrawerItem(
-//                    label = { Text("Favoritos") },
-//                    selected = false,
-//                    onClick = {
-//                        scope.launch { drawerState.close() }
-//                        navController.navigate(AppScreens.FavScreen.route)
-//                    },
-//                    icon = { Icon(Icons.Default.Favorite, contentDescription = "Favoritos") }
-//                )
-//
                 Spacer(modifier = Modifier.weight(1f))
                 HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
 
+                //Sección de contenido
+                NavigationDrawerItem(
+                    label = {Text("Blog")},
+                    selected = false,
+                    onClick = {
+                        scope.launch {drawerState.close()}
+                        navController.navigate(AppScreens.blogScreen.route)
+                    },
+                    icon = {
+                        Icon(
+                            Icons.Default.List,
+                            contentDescription = "Blog"
+                        )
+                    }
+                )
+
+                //Sección Configuración
                 NavigationDrawerItem(
                     label = { Text("Configuración") },
                     selected = false,
@@ -155,8 +141,8 @@ fun AppNavigationContainer() {
                     },
                     icon = { Icon(Icons.Default.Settings, contentDescription = "Configuración") }
                 )
-
             }
+
         },
         gesturesEnabled = drawerState.isOpen,
     ) {
@@ -190,7 +176,7 @@ fun AppNavigationContainer() {
             ) {
                 composable(route = AppScreens.HomeScreen.route) { HomeScreen(navController = navController) }
                 composable(route = AppScreens.LoginScreen.route) { LoginScreen(navController = navController) }
-//                composable(route = AppScreens.RegistroScreen.route) { RegistroScreen(navController = navController) }
+                //composable(route = AppScreens.RegistroScreen.route) { RegistroScreen(navController = navController) }
                 composable(route = AppScreens.FavScreen.route) { FavScreen(navController = navController) }
                 composable(route = AppScreens.CartScreen.route) { CartScreen(navController = navController) }
                 composable(route = AppScreens.UsSettScreen.route) { UsSettScreen(navController = navController) }
@@ -198,6 +184,15 @@ fun AppNavigationContainer() {
                 composable(route = AppScreens.FrutasScreen.route) { FrutasScreen(navController = navController) }
                 composable(route = AppScreens.OrganicosScreen.route) { OrganicosScreen(navController = navController) }
                 composable(route = AppScreens.VerdurasScreen.route) { VerdurasScreen(navController = navController) }
+                composable(route = "detalle_blog/{blogId}") {backStackEntry ->
+                    val blogId = backStackEntry.arguments?.getString("blogId")?: ""
+                    val blogViewModel: BlogViewModel = viewModel ()
+                    DetallesBlogsScreen(
+                        navController = navController,
+                        blogId = blogId,
+                        blogViewModel = blogViewModel
+                    )
+                }
             }
         }
     }
