@@ -77,11 +77,9 @@ import com.example.huerto_hogar.ui.theme.components.animations.slideInFromRightW
 import com.example.huerto_hogar.ui.theme.components.animations.slideOutToBottomWithFade
 import com.example.huerto_hogar.ui.theme.components.animations.slideOutToLeftWithFade
 import com.example.huerto_hogar.viewmodel.CartViewModel
+import com.example.huerto_hogar.viewmodel.FavoritesViewModel
 import com.example.huerto_hogar.viewmodel.LoginViewModel
 import com.example.huerto_hogar.viewmodel.RegisterUserViewModel
-import com.example.huerto_hogar.viewmodel.UserSettingsViewModel
-import com.example.huerto_hogar.viewmodel.CartViewModel
-import com.example.huerto_hogar.viewmodel.FavoritesViewModel
 import com.example.huerto_hogar.viewmodel.SalesViewModel
 import com.example.huerto_hogar.viewmodel.UserSettingsViewModel
 import kotlinx.coroutines.launch
@@ -335,21 +333,22 @@ fun AppNavigationContainer() {
                 )
 
                 Scaffold(
-            // Menu de navegacion inferioor
-            bottomBar = {
-                MainBottomBar(
-                    navController = navController, 
-                    onMenuClick = {
-                        scope.launch { drawerState.open() }
+                    // Menu de navegacion inferior
+                    bottomBar = {
+                        MainBottomBar(
+                            navController = navController, 
+                            onMenuClick = {
+                                scope.launch { drawerState.open() }
+                            }
+                        )
                     }
-                )
-            }) { contentPadding ->
-            // La logica del router/enrutamiento
-            NavHost(
-                navController = navController,
-                startDestination = startDestination,
-                modifier = Modifier.padding(contentPadding)
-            ) {
+                ) { contentPadding ->
+                    // La logica del router/enrutamiento
+                    NavHost(
+                        navController = navController,
+                        startDestination = startDestination,
+                        modifier = Modifier.padding(contentPadding)
+                    ) {
                 composable(
                     route = AppScreens.HomeScreen.route,
                     enterTransition = { fadeIn() },
@@ -473,6 +472,8 @@ fun AppNavigationContainer() {
                         cartViewModel = cartViewModel,
                         favoritesViewModel = favoritesViewModel
                     ) 
+                }
+            }
                 }
             }
         }
