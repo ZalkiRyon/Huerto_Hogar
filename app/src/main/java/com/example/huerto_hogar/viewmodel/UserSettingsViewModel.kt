@@ -40,6 +40,7 @@ class UserSettingsViewModel() : ViewModel() {
                     email = user.email,
                     address = user.address,
                     phone = user.phone ?: "",
+                    newProfilePhoto = user.profilePictureUrl.toString(),
                     isInitialLoadComplete = true
                 )
             }
@@ -71,7 +72,7 @@ class UserSettingsViewModel() : ViewModel() {
             }
         }
 
-        _uiState.update { it.copy(name = name, errors = it.errors.copy(nameError = error)) }
+        _uiState.update { it.copy(name = name, errors = it.errors.copy(nameError = error),) }
     }
 
     fun onChangeLastname(lastname: String) {
@@ -91,7 +92,7 @@ class UserSettingsViewModel() : ViewModel() {
         _uiState.update {
             it.copy(
                 lastname = lastname,
-                errors = it.errors.copy(lastnameError = error)
+                errors = it.errors.copy(lastnameError = error),
             )
         }
     }
@@ -104,7 +105,7 @@ class UserSettingsViewModel() : ViewModel() {
             error = "Solo se aceptan correos @duocuc.cl o @profesor.duoc.cl"
         }
 
-        _uiState.update { it.copy(email = email, errors = it.errors.copy(emailError = error)) }
+        _uiState.update { it.copy(email = email, errors = it.errors.copy(emailError = error),) }
     }
 
     fun onChangeAddress(address: String) {
@@ -119,7 +120,7 @@ class UserSettingsViewModel() : ViewModel() {
             }
         }
 
-        _uiState.update { it.copy(address = address, errors = it.errors.copy(addressError = error)) }
+        _uiState.update { it.copy(address = address, errors = it.errors.copy(addressError = error),) }
     }
 
     fun onChangePhone(phone: String) {
@@ -136,7 +137,7 @@ class UserSettingsViewModel() : ViewModel() {
             }
         }
 
-        _uiState.update { it.copy(phone = phone, errors = it.errors.copy(phoneError = error)) }
+        _uiState.update { it.copy(phone = phone, errors = it.errors.copy(phoneError = error),) }
     }
 
     private fun isValidDuocEmail(email: String): Boolean {
@@ -148,7 +149,7 @@ class UserSettingsViewModel() : ViewModel() {
         _uiState.update {
             it.copy(
                 currentPassword = password,
-                errors = it.errors.copy(currentPasswordError = null, errors = null)
+                errors = it.errors.copy(currentPasswordError = null, errors = null),
             )
         }
     }
@@ -157,7 +158,7 @@ class UserSettingsViewModel() : ViewModel() {
         _uiState.update {
             it.copy(
                 newPassword = password,
-                errors = it.errors.copy(newPasswordError = null)
+                errors = it.errors.copy(newPasswordError = null),
             )
         }
     }
@@ -166,14 +167,14 @@ class UserSettingsViewModel() : ViewModel() {
         _uiState.update {
             it.copy(
                 confirmNewPassword = password,
-                errors = it.errors.copy(confirmNewPasswordError = null)
+                errors = it.errors.copy(confirmNewPasswordError = null),
             )
         }
     }
 
 
     fun onClickSave() = viewModelScope.launch {
-        _uiState.update { it.copy(isLoading = true, errors = UserSettingErrors()) }
+        _uiState.update { it.copy(isLoading = true,) }
         val state = _uiState.value
         val currentUser = userManager.currentUser.value ?: run {
             _saveResult.emit(false); return@launch
@@ -182,7 +183,7 @@ class UserSettingsViewModel() : ViewModel() {
         val hasValidationErrors = validateProfileForm(state, currentUser)
 
         if (hasValidationErrors) {
-            _uiState.update { it.copy(isLoading = false) }
+            _uiState.update { it.copy() }
             return@launch
         }
 
@@ -207,17 +208,12 @@ class UserSettingsViewModel() : ViewModel() {
 
 
         _uiState.update {
-            it.copy(
-                isLoading = false,
-                currentPassword = "",
-                newPassword = "",
-                confirmNewPassword = ""
-            )
+            it.copy()
         }
 
         if (!success && !updatedUser.email.equals(currentUser.email, ignoreCase = true)) {
             _uiState.update {
-                it.copy(errors = it.errors.copy(errors = "El nuevo correo electrónico ya está en uso por otro usuario."))
+                it.copy(errors = it.errors.copy(errors = "El nuevo correo electrónico ya está en uso por otro usuario."),)
             }
         }
         _saveResult.emit(success)
@@ -315,7 +311,7 @@ class UserSettingsViewModel() : ViewModel() {
             }
         }
 
-        _uiState.update { it.copy(errors = errors) }
+        _uiState.update { it.copy(errors = errors,) }
         return hasError
     }
 

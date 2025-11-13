@@ -64,14 +64,12 @@ fun UsSetScreen(navController: NavController, viewModel: UserSettingsViewModel) 
     val context = LocalContext.current
     val scrollState = rememberScrollState()
     val showSourceDialog = remember { mutableStateOf(false) }
+    var cameraImageUri by remember { mutableStateOf<Uri?>(null) }
     val profileUri by viewModel.profilePictureUri.collectAsState()
-
-    var isCameraPermissionGranted by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         viewModel.loadUserProfile()
     }
-
 
     LaunchedEffect(viewModel.saveResult) {
         viewModel.saveResult.collect { success ->
@@ -97,22 +95,6 @@ fun UsSetScreen(navController: NavController, viewModel: UserSettingsViewModel) 
         return
     }
 
-    val photoFile: File = remember {
-        File.createTempFile(
-            "profile_pic",
-            ".jpg",
-            context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        )
-    }
-
-    val uri: Uri = remember {
-        FileProvider.getUriForFile(
-            context,
-            "${context.packageName}.fileprovider",
-            photoFile
-        )
-    }
-
     val galleryLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
@@ -123,29 +105,45 @@ fun UsSetScreen(navController: NavController, viewModel: UserSettingsViewModel) 
         contract = ActivityResultContracts.TakePicture()
     ) { success: Boolean ->
         if (success) {
-            viewModel.setProfilePictureUri(uri)
+            // este webon no deja cambiar
+            //viewModel.setProfilePictureUri(uri)
+            cameraImageUri?.let { viewModel.setProfilePictureUri(it) }
         }
     }
 
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
-        isCameraPermissionGranted = isGranted
         if (isGranted) {
-            cameraLauncher.launch(uri)
+            cameraImageUri?.let { uri -> cameraLauncher.launch(uri) }
         }
     }
 
     fun launchCameraFlow() {
+        val newPhotoFile = File.createTempFile(
+            "profile_pic${System.currentTimeMillis()}",
+            ".jpg",
+            context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        )
+
+        val newUri = FileProvider.getUriForFile(
+            context,
+            "${context.packageName}.fileprovider",
+            newPhotoFile
+        )
+
+        cameraImageUri = newUri
+
         if (ContextCompat.checkSelfPermission(
                 context,
                 Manifest.permission.CAMERA
             ) == PackageManager.PERMISSION_GRANTED
         ) {
-            cameraLauncher.launch(uri)
+            cameraLauncher.launch(newUri)
         } else {
             permissionLauncher.launch(Manifest.permission.CAMERA)
         }
+
     }
 
 
