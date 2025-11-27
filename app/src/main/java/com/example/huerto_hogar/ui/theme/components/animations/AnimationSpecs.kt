@@ -27,7 +27,7 @@ object AnimationSpecs {
     const val SCALE_SMALL = 0.8f
     
     // ============================================
-    // VALORES DE ALPHA (NOT USED - kept for potential future use)
+    // VALORES DE ALPHA 
     // ============================================
     const val ALPHA_INVISIBLE = 0f
     const val ALPHA_SEMI_TRANSPARENT = 0.5f

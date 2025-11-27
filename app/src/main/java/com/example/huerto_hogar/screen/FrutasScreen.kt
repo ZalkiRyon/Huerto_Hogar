@@ -76,13 +76,13 @@ fun FrutasScreen(
                     coroutineScope.launch {
                         if (wasAdded) {
                             snackbarHostState.showSnackbar(
-                                message = "✓ ${product.name} agregado a favoritos",
+                                message = "${product.name} agregado a favoritos",
                                 duration = SnackbarDuration.Short
                             )
                         } else {
                             favoritesViewModel.removeFromFavorites(product.id)
                             snackbarHostState.showSnackbar(
-                                message = "X ${product.name} eliminado de favoritos",
+                                message = "${product.name} eliminado de favoritos",
                                 duration = SnackbarDuration.Short
                             )
                         }
@@ -110,7 +110,7 @@ fun FrutasScreen(
                         cartViewModel.addToCart(productoAgregado)
                         coroutineScope.launch {
                             snackbarHostState.showSnackbar(
-                                message = "✓ ${productoAgregado.name} agregado al carrito",
+                                message = "${productoAgregado.name} agregado al carrito",
                                 duration = SnackbarDuration.Short
                             )
                         }
@@ -120,7 +120,7 @@ fun FrutasScreen(
                         coroutineScope.launch {
                             if (wasAdded) {
                                 snackbarHostState.showSnackbar(
-                                    message = "✓ ${product.name} agregado a favoritos",
+                                    message = "${product.name} agregado a favoritos",
                                     duration = SnackbarDuration.Short
                                 )
                             } else {
